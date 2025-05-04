@@ -22,3 +22,10 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 
 app.use(cookieParser());
+
+
+import studentRouter from "./routes/studentController/routes.js";
+
+app.use("/v1/students/", studentRouter);
+
+export {app};
