@@ -29,3 +29,7 @@ import studentRouter from "./routes/studentController/routes.js";
 app.use("/v1/students/", studentRouter);
 
 export {app};
+
+function cors(arg0: { origin: string; credentials: boolean; }): any {
+  throw new Error("Function not implemented.");
+}
