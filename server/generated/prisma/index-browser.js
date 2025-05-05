@@ -143,7 +143,6 @@ exports.Prisma.TeacherScalarFieldEnum = {
   name: 'name',
   email: 'email',
   password_hash: 'password_hash',
-  is_suspended: 'is_suspended',
   department: 'department',
   role: 'role',
   gender: 'gender',

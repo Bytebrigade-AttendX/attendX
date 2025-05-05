@@ -3025,7 +3025,6 @@ export namespace Prisma {
     name: string | null
     email: string | null
     password_hash: string | null
-    is_suspended: boolean | null
     department: $Enums.Department | null
     role: string | null
     gender: $Enums.Gender | null
@@ -3041,7 +3040,6 @@ export namespace Prisma {
     name: string | null
     email: string | null
     password_hash: string | null
-    is_suspended: boolean | null
     department: $Enums.Department | null
     role: string | null
     gender: $Enums.Gender | null
@@ -3057,7 +3055,6 @@ export namespace Prisma {
     name: number
     email: number
     password_hash: number
-    is_suspended: number
     department: number
     role: number
     gender: number
@@ -3075,7 +3072,6 @@ export namespace Prisma {
     name?: true
     email?: true
     password_hash?: true
-    is_suspended?: true
     department?: true
     role?: true
     gender?: true
@@ -3091,7 +3087,6 @@ export namespace Prisma {
     name?: true
     email?: true
     password_hash?: true
-    is_suspended?: true
     department?: true
     role?: true
     gender?: true
@@ -3107,7 +3102,6 @@ export namespace Prisma {
     name?: true
     email?: true
     password_hash?: true
-    is_suspended?: true
     department?: true
     role?: true
     gender?: true
@@ -3196,7 +3190,6 @@ export namespace Prisma {
     name: string
     email: string
     password_hash: string
-    is_suspended: boolean
     department: $Enums.Department
     role: string
     gender: $Enums.Gender
@@ -3229,7 +3222,6 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     password_hash?: boolean
-    is_suspended?: boolean
     department?: boolean
     role?: boolean
     gender?: boolean
@@ -3248,7 +3240,6 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     password_hash?: boolean
-    is_suspended?: boolean
     department?: boolean
     role?: boolean
     gender?: boolean
@@ -3264,7 +3255,6 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     password_hash?: boolean
-    is_suspended?: boolean
     department?: boolean
     role?: boolean
     gender?: boolean
@@ -3280,7 +3270,6 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     password_hash?: boolean
-    is_suspended?: boolean
     department?: boolean
     role?: boolean
     gender?: boolean
@@ -3291,7 +3280,7 @@ export namespace Prisma {
     teacher_id_no?: boolean
   }
 
-  export type TeacherOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password_hash" | "is_suspended" | "department" | "role" | "gender" | "change_password_token" | "change_password_expiry" | "created_at" | "updated_at" | "teacher_id_no", ExtArgs["result"]["teacher"]>
+  export type TeacherOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password_hash" | "department" | "role" | "gender" | "change_password_token" | "change_password_expiry" | "created_at" | "updated_at" | "teacher_id_no", ExtArgs["result"]["teacher"]>
   export type TeacherInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     classes?: boolean | Teacher$classesArgs<ExtArgs>
     attendances?: boolean | Teacher$attendancesArgs<ExtArgs>
@@ -3311,7 +3300,6 @@ export namespace Prisma {
       name: string
       email: string
       password_hash: string
-      is_suspended: boolean
       department: $Enums.Department
       role: string
       gender: $Enums.Gender
@@ -3749,7 +3737,6 @@ export namespace Prisma {
     readonly name: FieldRef<"Teacher", 'String'>
     readonly email: FieldRef<"Teacher", 'String'>
     readonly password_hash: FieldRef<"Teacher", 'String'>
-    readonly is_suspended: FieldRef<"Teacher", 'Boolean'>
     readonly department: FieldRef<"Teacher", 'Department'>
     readonly role: FieldRef<"Teacher", 'String'>
     readonly gender: FieldRef<"Teacher", 'Gender'>
@@ -10785,7 +10772,6 @@ export namespace Prisma {
     name: 'name',
     email: 'email',
     password_hash: 'password_hash',
-    is_suspended: 'is_suspended',
     department: 'department',
     role: 'role',
     gender: 'gender',
@@ -11113,7 +11099,6 @@ export namespace Prisma {
     name?: StringFilter<"Teacher"> | string
     email?: StringFilter<"Teacher"> | string
     password_hash?: StringFilter<"Teacher"> | string
-    is_suspended?: BoolFilter<"Teacher"> | boolean
     department?: EnumDepartmentFilter<"Teacher"> | $Enums.Department
     role?: StringFilter<"Teacher"> | string
     gender?: EnumGenderFilter<"Teacher"> | $Enums.Gender
@@ -11131,7 +11116,6 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password_hash?: SortOrder
-    is_suspended?: SortOrder
     department?: SortOrder
     role?: SortOrder
     gender?: SortOrder
@@ -11153,7 +11137,6 @@ export namespace Prisma {
     NOT?: TeacherWhereInput | TeacherWhereInput[]
     name?: StringFilter<"Teacher"> | string
     password_hash?: StringFilter<"Teacher"> | string
-    is_suspended?: BoolFilter<"Teacher"> | boolean
     department?: EnumDepartmentFilter<"Teacher"> | $Enums.Department
     role?: StringFilter<"Teacher"> | string
     gender?: EnumGenderFilter<"Teacher"> | $Enums.Gender
@@ -11170,7 +11153,6 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password_hash?: SortOrder
-    is_suspended?: SortOrder
     department?: SortOrder
     role?: SortOrder
     gender?: SortOrder
@@ -11192,7 +11174,6 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Teacher"> | string
     email?: StringWithAggregatesFilter<"Teacher"> | string
     password_hash?: StringWithAggregatesFilter<"Teacher"> | string
-    is_suspended?: BoolWithAggregatesFilter<"Teacher"> | boolean
     department?: EnumDepartmentWithAggregatesFilter<"Teacher"> | $Enums.Department
     role?: StringWithAggregatesFilter<"Teacher"> | string
     gender?: EnumGenderWithAggregatesFilter<"Teacher"> | $Enums.Gender
@@ -11672,7 +11653,6 @@ export namespace Prisma {
     name: string
     email: string
     password_hash: string
-    is_suspended?: boolean
     department: $Enums.Department
     role?: string
     gender: $Enums.Gender
@@ -11690,7 +11670,6 @@ export namespace Prisma {
     name: string
     email: string
     password_hash: string
-    is_suspended?: boolean
     department: $Enums.Department
     role?: string
     gender: $Enums.Gender
@@ -11708,7 +11687,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
-    is_suspended?: BoolFieldUpdateOperationsInput | boolean
     department?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
     role?: StringFieldUpdateOperationsInput | string
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -11726,7 +11704,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
-    is_suspended?: BoolFieldUpdateOperationsInput | boolean
     department?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
     role?: StringFieldUpdateOperationsInput | string
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -11744,7 +11721,6 @@ export namespace Prisma {
     name: string
     email: string
     password_hash: string
-    is_suspended?: boolean
     department: $Enums.Department
     role?: string
     gender: $Enums.Gender
@@ -11760,7 +11736,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
-    is_suspended?: BoolFieldUpdateOperationsInput | boolean
     department?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
     role?: StringFieldUpdateOperationsInput | string
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -11776,7 +11751,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
-    is_suspended?: BoolFieldUpdateOperationsInput | boolean
     department?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
     role?: StringFieldUpdateOperationsInput | string
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -12422,7 +12396,6 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password_hash?: SortOrder
-    is_suspended?: SortOrder
     department?: SortOrder
     role?: SortOrder
     gender?: SortOrder
@@ -12438,7 +12411,6 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password_hash?: SortOrder
-    is_suspended?: SortOrder
     department?: SortOrder
     role?: SortOrder
     gender?: SortOrder
@@ -12454,7 +12426,6 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password_hash?: SortOrder
-    is_suspended?: SortOrder
     department?: SortOrder
     role?: SortOrder
     gender?: SortOrder
@@ -14208,7 +14179,6 @@ export namespace Prisma {
     name: string
     email: string
     password_hash: string
-    is_suspended?: boolean
     department: $Enums.Department
     role?: string
     gender: $Enums.Gender
@@ -14225,7 +14195,6 @@ export namespace Prisma {
     name: string
     email: string
     password_hash: string
-    is_suspended?: boolean
     department: $Enums.Department
     role?: string
     gender: $Enums.Gender
@@ -14308,7 +14277,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
-    is_suspended?: BoolFieldUpdateOperationsInput | boolean
     department?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
     role?: StringFieldUpdateOperationsInput | string
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -14325,7 +14293,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
-    is_suspended?: BoolFieldUpdateOperationsInput | boolean
     department?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
     role?: StringFieldUpdateOperationsInput | string
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -14454,7 +14421,6 @@ export namespace Prisma {
     name: string
     email: string
     password_hash: string
-    is_suspended?: boolean
     department: $Enums.Department
     role?: string
     gender: $Enums.Gender
@@ -14471,7 +14437,6 @@ export namespace Prisma {
     name: string
     email: string
     password_hash: string
-    is_suspended?: boolean
     department: $Enums.Department
     role?: string
     gender: $Enums.Gender
@@ -14588,7 +14553,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
-    is_suspended?: BoolFieldUpdateOperationsInput | boolean
     department?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
     role?: StringFieldUpdateOperationsInput | string
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -14605,7 +14569,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
-    is_suspended?: BoolFieldUpdateOperationsInput | boolean
     department?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
     role?: StringFieldUpdateOperationsInput | string
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender

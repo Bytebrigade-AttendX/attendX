@@ -58,7 +58,6 @@ model Teacher {
   name                   String             @db.VarChar(255)
   email                  String             @unique @db.VarChar(255)
   password_hash          String             @db.Text
-  is_suspended           Boolean            @default(false)
   department             Department
   role                   String             @default("teacher") @db.VarChar(255)
   gender                 Gender
