@@ -41,6 +41,7 @@ model User {
   name        String     @db.VarChar(255)
   email       String     @db.VarChar(255) @unique
   otp         String
+  otp_expiry  DateTime    
   is_suspended Boolean    @default(false)
   department  Department
   role        Role

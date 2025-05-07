@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import adminRouter from "./routes/admin.route.js";
 import { Server } from "socket.io";
 import http from "http";
-
+import userRouter from "./routes/user.route.js";
 const app = express();
 
 
@@ -21,8 +21,7 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 
 app.use(express.static("public"));
 
-app.use(cookieParser());
 
 app.use("/api/v1/admin", adminRouter);
-
-export { app,  };
+app.use("/api/v1/user", userRouter);
+export { app };

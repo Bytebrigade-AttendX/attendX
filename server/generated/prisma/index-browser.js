@@ -125,6 +125,7 @@ exports.Prisma.UserScalarFieldEnum = {
   name: 'name',
   email: 'email',
   otp: 'otp',
+  otp_expiry: 'otp_expiry',
   is_suspended: 'is_suspended',
   department: 'department',
   role: 'role',

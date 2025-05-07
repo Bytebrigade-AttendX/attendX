@@ -2,6 +2,7 @@ import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
 import { sendMail } from "../utils/mailer";
 import prisma from "../db/db.config.js";
+import { generateToken } from "../utils/genToken.js";
 const loginOtpSend = async (req, res) => {
   const email = req.body.email;
   if (!email) throw new ApiError(400, "Email address required.");
@@ -14,7 +15,7 @@ const loginOtpSend = async (req, res) => {
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   await prisma.user.update({
     where: { id: user.id },
-    data: { otp },
+    data: { otp, otp_expiry: new Date(Date.now()+5*60*1000) },
   });
   const mailed = await sendMail(email, otp);
   if (!mailed)
@@ -29,5 +30,14 @@ const loginOtpVerify = async (req, res) => {
     where: { email: email },
   });
   if (!user) throw new ApiError(404, "User not found.");
+  if (user.otp !== otp || user.otp_expiry < new Date()) throw new ApiError(400, "OTP mismatch or expired.")
+  const token = generateToken(user.id)
+  if (!token) throw new ApiError(500, "Something went wrong. Token not generated.")
+  await prisma.user.update({
+    where: {id: user.id},
+    data: {otp: null, otp_expiry: null}
+  })
+  res.status(200).json(new ApiResponse(200, {token}, "Login successful."))
+
 };
-export { loginOtpSend };
+export { loginOtpSend, loginOtpVerify };
