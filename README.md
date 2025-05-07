@@ -1,4 +1,4 @@
-# 📍 AttendX
+#  AttendX
 
 **AttendX** is a GPS-based attendance management application designed for educational institutions. It enables seamless, location-verified student check-ins, reducing manual errors and ensuring authenticity in attendance tracking. The system supports both admin and student roles, providing secure login, real-time updates, and centralized attendance logs through Firebase.
 
