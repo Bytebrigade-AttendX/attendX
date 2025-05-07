@@ -8,11 +8,7 @@ import http from "http";
 
 const app = express();
 
-const server = http.createServer(app);
 
-const io = Server(server, {
-  cors: { origin: "*", methods: ["GET", "POST", "PUT"] },
-});
 
 app.use(cors("*"));
 
@@ -29,4 +25,4 @@ app.use(cookieParser());
 
 app.use("/api/v1/admin", adminRouter);
 
-export { app, io, server };
+export { app,  };

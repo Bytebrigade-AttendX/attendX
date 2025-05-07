@@ -216,7 +216,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\user\\Desktop\\Anurag\\AttendX\\attendX\\server\\generated\\prisma",
+      "value": "/home/aadar/projects/attendX/server/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -225,17 +225,16 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\user\\Desktop\\Anurag\\AttendX\\attendX\\server\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/aadar/projects/attendX/server/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../prisma",
   "clientVersion": "6.7.0",
