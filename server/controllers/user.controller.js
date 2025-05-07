@@ -1,6 +1,6 @@
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
-import { sendMail } from "../utils/mailer";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { sendMail } from "../utils/mailer.js";
 import prisma from "../db/db.config.js";
 import { generateToken } from "../utils/genToken.js";
 const loginOtpSend = async (req, res) => {
