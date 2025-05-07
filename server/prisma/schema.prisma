@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -19,6 +16,7 @@ enum Department {
   ECE
   ME
   EE
+  Other 
 }
 
 enum Gender {
@@ -32,43 +30,55 @@ enum AttendanceStatus {
   absent
 }
 
-model Student {
-  id                     String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                   String             @db.VarChar(255)
-  email                  String             @unique @db.VarChar(255)
-  password_hash          String             @db.Text
-  is_suspended           Boolean            @default(false)
-  department             Department
-  role                   String             @default("student") @db.VarChar(255)
-  gender                 Gender
-  change_password_token  String?            @db.VarChar(255)
-  change_password_expiry DateTime?
-  created_at             DateTime           @default(dbgenerated("now()"))
-  updated_at             DateTime           @default(dbgenerated("now()"))
-  class_id               String             @db.Uuid
-  year                   Int
-  reg_no                 String             @unique @db.VarChar(255)
-
-  class                  Class              @relation(fields: [class_id], references: [id])
-  attendanceRecords      AttendanceRecord[]
+enum Role {
+  student
+  teacher
+  admin
 }
 
-model Teacher {
-  id                     String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                   String             @db.VarChar(255)
-  email                  String             @unique @db.VarChar(255)
-  password_hash          String             @db.Text
-  department             Department
-  role                   String             @default("teacher") @db.VarChar(255)
-  gender                 Gender
-  change_password_token  String?            @db.VarChar(255)
-  change_password_expiry DateTime?
-  created_at             DateTime           @default(dbgenerated("now()"))
-  updated_at             DateTime           @default(dbgenerated("now()"))
-  teacher_id_no          String             @unique @db.VarChar(255)
+model User {
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String     @db.VarChar(255)
+  email       String     @db.VarChar(255) @unique
+  otp         String
+  is_suspended Boolean    @default(false)
+  department  Department
+  role        Role
+  gender      Gender
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @default(now())
+  
+  // Relations
+  teacher     Teacher?   // One-to-one relation with Teacher
+  student     Student?   // One-to-one relation with Student
+}
 
-  classes                TeacherClass[]
-  attendances            Attendance[]
+// Teachers model
+model Teacher {
+  id            String         @id @db.Uuid
+  teacher_id_no String         @db.VarChar(255) @unique
+  
+  // Relation to User
+  user          User           @relation(fields: [id], references: [id])
+  
+  // Relations for classes, subjects and attendance
+  teacherClasses TeacherClass[]
+  attendances    Attendance[]
+}
+
+// Students model
+model Student {
+  id        String             @id @db.Uuid
+  class_id  String             @db.Uuid
+  year      Int
+  reg_no    String             @db.VarChar(255) @unique
+  
+  // Relation to User
+  user      User               @relation(fields: [id], references: [id])
+  
+  // Relations
+  class     Class              @relation(fields: [class_id], references: [id])
+  attendanceRecords AttendanceRecord[]
 }
 
 model Class {
@@ -76,11 +86,11 @@ model Class {
   code           String           @unique @db.VarChar(50)
   dept           Department
   year           Int
-  created_at     DateTime         @default(dbgenerated("now()"))
+  created_at     DateTime         @default(now())
 
   students       Student[]
   subjects       ClassSubject[]
-  teachers       TeacherClass[]
+  teacherClasses TeacherClass[]
   attendances    Attendance[]
 }
 
@@ -88,10 +98,10 @@ model Subject {
   id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   code           String           @unique @db.VarChar(50)
   name           String           @db.VarChar(255)
-  created_at     DateTime         @default(dbgenerated("now()"))
+  created_at     DateTime         @default(now())
 
   classes        ClassSubject[]
-  teachers       TeacherClass[]
+  teacherClasses TeacherClass[]
   attendances    Attendance[]
 }
 
@@ -122,7 +132,8 @@ model Attendance {
   class_id       String             @db.Uuid
   subject_id     String             @db.Uuid
   teacher_id     String             @db.Uuid
-  created_at     DateTime           @default(dbgenerated("now()"))
+  date           DateTime           @default(now())
+  created_at     DateTime           @default(now())
 
   class          Class              @relation(fields: [class_id], references: [id])
   subject        Subject            @relation(fields: [subject_id], references: [id])
@@ -135,6 +146,7 @@ model AttendanceRecord {
   attendance_id  String             @db.Uuid
   student_id     String             @db.Uuid
   status         AttendanceStatus
+  created_at     DateTime           @default(now())
 
   attendance     Attendance         @relation(fields: [attendance_id], references: [id])
   student        Student            @relation(fields: [student_id], references: [id])
