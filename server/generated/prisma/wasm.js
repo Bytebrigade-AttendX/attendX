@@ -120,37 +120,29 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.StudentScalarFieldEnum = {
+exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
-  password_hash: 'password_hash',
+  otp: 'otp',
   is_suspended: 'is_suspended',
   department: 'department',
   role: 'role',
   gender: 'gender',
-  change_password_token: 'change_password_token',
-  change_password_expiry: 'change_password_expiry',
   created_at: 'created_at',
-  updated_at: 'updated_at',
-  class_id: 'class_id',
-  year: 'year',
-  reg_no: 'reg_no'
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.TeacherScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  email: 'email',
-  password_hash: 'password_hash',
-  department: 'department',
-  role: 'role',
-  gender: 'gender',
-  change_password_token: 'change_password_token',
-  change_password_expiry: 'change_password_expiry',
-  created_at: 'created_at',
-  updated_at: 'updated_at',
   teacher_id_no: 'teacher_id_no'
+};
+
+exports.Prisma.StudentScalarFieldEnum = {
+  id: 'id',
+  class_id: 'class_id',
+  year: 'year',
+  reg_no: 'reg_no'
 };
 
 exports.Prisma.ClassScalarFieldEnum = {
@@ -184,6 +176,7 @@ exports.Prisma.AttendanceScalarFieldEnum = {
   class_id: 'class_id',
   subject_id: 'subject_id',
   teacher_id: 'teacher_id',
+  date: 'date',
   created_at: 'created_at'
 };
 
@@ -191,7 +184,8 @@ exports.Prisma.AttendanceRecordScalarFieldEnum = {
   id: 'id',
   attendance_id: 'attendance_id',
   student_id: 'student_id',
-  status: 'status'
+  status: 'status',
+  created_at: 'created_at'
 };
 
 exports.Prisma.SortOrder = {
@@ -203,16 +197,18 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
-
-exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
-};
 exports.Department = exports.$Enums.Department = {
   CSE: 'CSE',
   ECE: 'ECE',
   ME: 'ME',
-  EE: 'EE'
+  EE: 'EE',
+  Other: 'Other'
+};
+
+exports.Role = exports.$Enums.Role = {
+  student: 'student',
+  teacher: 'teacher',
+  admin: 'admin'
 };
 
 exports.Gender = exports.$Enums.Gender = {
@@ -227,8 +223,9 @@ exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
 };
 
 exports.Prisma.ModelName = {
-  Student: 'Student',
+  User: 'User',
   Teacher: 'Teacher',
+  Student: 'Student',
   Class: 'Class',
   Subject: 'Subject',
   ClassSubject: 'ClassSubject',
