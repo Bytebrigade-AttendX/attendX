@@ -41,8 +41,6 @@ const addTeacher = async (req, res) => {
   } catch (error) {
     console.error("Error creating teacher:", error);
     throw error;
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
@@ -57,7 +55,11 @@ const addClasses = async (req, res) => {
       },
     });
     console.log("Inserted class:", newClass);
-  } catch (error) {}
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Internal server error", successful: false });
+  }
 };
 
 export { addTeacher, addStudent, addClasses };
