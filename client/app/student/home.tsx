@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Svg, { Circle, G, Text as TextSvg } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/Ionicons';
-import NotificationPanel from '../others/notification';
+import NotificationPanel from '../student-others/notification';
 
 const subjects = [
   { id: 1, name: 'DBMS', subcode: 'SUBCODE', professor: 'Prof. Name', total: 22, present: 17 },
@@ -43,7 +43,7 @@ export default function HomeScreen() {
             subject={subject}
             expanded={expandedId === subject.id}
             onPress={() => toggleExpand(subject.id)}
-            onViewDetails={() => router.push('/others/attendance')}
+            onViewDetails={() => router.push('/student-others/attendance')}
           />
         ))}
       </ScrollView>

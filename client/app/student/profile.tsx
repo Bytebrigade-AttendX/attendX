@@ -1,8 +1,7 @@
 import { Feather, Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router'; // ✅ useRouter for navigation
+import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
   Image,
   SafeAreaView,
   ScrollView,
@@ -13,16 +12,11 @@ import {
 } from 'react-native';
 
 export default function Profile() {
-  const router = useRouter(); // ✅ use router instead of props
+  const router = useRouter();
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchUserProfile();
-  }, []);
-
-  const fetchUserProfile = async () => {
-    const dummyUser = {
+    setUser({
       name: 'Kuljeet Singh',
       branch: 'Information Technology',
       regNo: '123456789012345',
@@ -30,27 +24,16 @@ export default function Profile() {
       email: 'kuljeet@email.com',
       address: '42B, Sector 12, Mumbai, India',
       avatar: 'https://via.placeholder.com/80',
-    };
+    });
+  }, []);
 
-    setTimeout(() => {
-      setUser(dummyUser);
-      setLoading(false);
-    }, 1000);
-  };
-
-  if (loading) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <ActivityIndicator size="large" color="#000" style={{ marginTop: 100 }} />
-      </SafeAreaView>
-    );
-  }
+  if (!user) return null;
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.replace('/main/home')}>
+        <TouchableOpacity onPress={() => router.replace('/student/home')}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Profile</Text>
