@@ -77,4 +77,8 @@ const verifyRefreshToken = async (req, res) => {
     console.log(error.message);
   }
 };
+
+const getUser = async (req, res) => {
+  const { userId } = req.body;
+};
 export { loginOtpSend, loginOtpVerify, verifyRefreshToken };
