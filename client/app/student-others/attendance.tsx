@@ -43,16 +43,15 @@ const AttendanceScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
+
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.replace('/main/home')}>
+        <TouchableOpacity onPress={() => router.replace('/student/home')}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Attendance</Text>
         <View style={{ width: 24 }} />
       </View>
 
-      {/* Calendar and Legend */}
       <View style={styles.calendarWrapper}>
         <View style={styles.calendarCard}>
           <Calendar

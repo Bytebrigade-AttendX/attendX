@@ -1,6 +1,5 @@
-import axios from 'axios';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
   Keyboard,
@@ -13,15 +12,17 @@ import {
   TouchableWithoutFeedback,
   Vibration,
   View,
-} from 'react-native';
+} from "react-native";
 
 export default function OTP() {
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState("");
   const inputRef = useRef<TextInput>(null);
   const router = useRouter();
   const { email } = useLocalSearchParams<{ email: string }>();
 
-  const scaleAnim = useRef(new Animated.Value(otp.length === 0 ? 0.95 : 1)).current;
+  const scaleAnim = useRef(
+    new Animated.Value(otp.length === 0 ? 0.95 : 1)
+  ).current;
   const opacityAnim = useRef(new Animated.Value(0.7)).current;
 
   useEffect(() => {
@@ -40,35 +41,55 @@ export default function OTP() {
   }, [otp]);
 
   const handleChange = (text: string) => {
-    const sanitized = text.replace(/[^0-9]/g, '');
+    const sanitized = text.replace(/[^0-9]/g, "");
     if (sanitized.length <= 6) setOtp(sanitized);
   };
 
-  const handleVerify = async() => {
+  const handleVerify = async () => {
     try {
-      const response =await axios.post(`${process.env.API_BASE_URL}/api/vi/user/loginOtpVerify`, {email,otp})
-      if (otp === '123456') {
-      router.push('/main/home');
-    } else {
-      triggerShake();
-      Vibration.vibrate(100);
-    }
-    } catch (error) {
-      
-    }
-    
+      const response = await axios.post(
+        `${process.env.API_BASE_URL}/api/vi/user/loginOtpVerify`,
+        { email, otp }
+      );
+      if (otp === "123456") {
+        router.push("/main/home");
+      } else {
+        triggerShake();
+        Vibration.vibrate(100);
+      }
+    } catch (error) {}
   };
+  const handleResend = () => {};
 
-  const handleResend = () => { }
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
   const triggerShake = () => {
     Animated.sequence([
-      Animated.timing(shakeAnim, { toValue: 10, duration: 50, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: -10, duration: 50, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: 6, duration: 50, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: -6, duration: 50, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: 0, duration: 50, useNativeDriver: true }),
+      Animated.timing(shakeAnim, {
+        toValue: 10,
+        duration: 50,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shakeAnim, {
+        toValue: -10,
+        duration: 50,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shakeAnim, {
+        toValue: 6,
+        duration: 50,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shakeAnim, {
+        toValue: -6,
+        duration: 50,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shakeAnim, {
+        toValue: 0,
+        duration: 50,
+        useNativeDriver: true,
+      }),
     ]).start();
   };
 
@@ -82,7 +103,7 @@ export default function OTP() {
             styles.otpBox,
             isActive && {
               transform: [{ scale: 1.05 }],
-              shadowColor: '#aaa',
+              shadowColor: "#aaa",
               shadowOffset: { width: 0, height: 2 },
               shadowOpacity: 0.3,
               shadowRadius: 4,
@@ -90,7 +111,7 @@ export default function OTP() {
             },
           ]}
         >
-          <Text style={styles.otpText}>{otp[i] || ''}</Text>
+          <Text style={styles.otpText}>{otp[i] || ""}</Text>
         </Animated.View>
       );
     });
@@ -98,7 +119,7 @@ export default function OTP() {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -110,11 +131,16 @@ export default function OTP() {
           </View>
 
           <View style={styles.cardWrapper}>
-            <Animated.View style={[styles.card, { transform: [{ translateX: shakeAnim }] }]}>
+            <Animated.View
+              style={[styles.card, { transform: [{ translateX: shakeAnim }] }]}
+            >
               <Text style={styles.label}>Enter OTP sent to</Text>
               <Text style={styles.email}>{email}</Text>
 
-              <TouchableOpacity activeOpacity={1} onPress={() => inputRef.current?.focus()}>
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => inputRef.current?.focus()}
+              >
                 <View style={styles.otpContainer}>{renderOtpBoxes()}</View>
               </TouchableOpacity>
 
@@ -143,7 +169,8 @@ export default function OTP() {
                   {
                     opacity: opacityAnim,
                     transform: [{ scale: scaleAnim }],
-                    backgroundColor: otp.length === 6 ? '#e55373' : 'rgba(229, 83, 115, 0.7)',
+                    backgroundColor:
+                      otp.length === 6 ? "#e55373" : "rgba(229, 83, 115, 0.7)",
                   },
                 ]}
               >
@@ -166,67 +193,67 @@ export default function OTP() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   inner: {
     flex: 1,
   },
   logoContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   logo: {
     fontSize: 32,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
   },
   logoX: {
-    color: '#e55373',
+    color: "#e55373",
   },
   cardWrapper: {
     paddingHorizontal: 5,
   },
   card: {
-    backgroundColor: '#eaeaea',
+    backgroundColor: "#eaeaea",
     padding: 30,
     paddingBottom: 40,
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
   },
   label: {
-    textAlign: 'center',
-    color: '#000',
+    textAlign: "center",
+    color: "#000",
     fontSize: 16,
     marginBottom: 4,
   },
   email: {
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 20,
-    color: '#444',
+    color: "#444",
     fontSize: 14,
   },
   otpContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   otpBox: {
     flex: 1,
     height: 52,
     marginHorizontal: 4,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   otpText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
   },
   hiddenInput: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     height: 0,
@@ -234,12 +261,12 @@ const styles = StyleSheet.create({
     opacity: 0,
   },
   footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   footerText: {
-    color: '#000',
+    color: "#000",
     fontSize: 13,
   },
   animatedButton: {
@@ -247,12 +274,12 @@ const styles = StyleSheet.create({
   },
   touchable: {
     paddingVertical: 16,
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 28,
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 17,
   },
 });

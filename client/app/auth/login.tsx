@@ -1,5 +1,5 @@
-import { useRouter } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
+import { useRouter } from "expo-router";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
   Keyboard,
@@ -11,12 +11,10 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-} from 'react-native';
-import axios, { AxiosError } from 'axios';
-import { useToast } from 'react-native-toast-notifications';
+} from "react-native";
+
 export default function LoginScreen() {
-  const Toast=useToast()
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
   const router = useRouter();
 
@@ -46,24 +44,28 @@ export default function LoginScreen() {
   const handleContinue = async () => {
     if (isValidEmail) {
       try {
-        const response = await axios.post(`${process.env.API_BASE_URL}/api/v1/user/loginOtpSend`, { email });
+        const response = await axios.post(
+          `${process.env.API_BASE_URL}/api/v1/user/loginOtpSend`,
+          { email }
+        );
         if (response.status === 200) {
           router.push({
-            pathname: '/auth/otp',
+            pathname: "/auth/otp",
             params: { email },
           });
         }
-      } catch (error:any) {
+      } catch (error: any) {
         Toast.show(error.response.data.message, {
-          type:"danger",placement:'top'
-        })
+          type: "danger",
+          placement: "top",
+        });
       }
     }
   };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -92,7 +94,9 @@ export default function LoginScreen() {
                   {
                     opacity: opacityAnim,
                     transform: [{ scale: scaleAnim }],
-                    backgroundColor: isValidEmail ? '#e55373' : 'rgba(229, 83, 115, 0.7)',
+                    backgroundColor: isValidEmail
+                      ? "#e55373"
+                      : "rgba(229, 83, 115, 0.7)",
                   },
                 ]}
               >
@@ -115,29 +119,29 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   inner: {
     flex: 1,
   },
   logoContainer: {
     flex: 1.2,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   logo: {
     fontSize: 36,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
   },
   logoX: {
-    color: '#e55373',
+    color: "#e55373",
   },
   cardWrapper: {
     paddingHorizontal: 5,
   },
   card: {
-    backgroundColor: '#eaeaea',
+    backgroundColor: "#eaeaea",
     padding: 30,
     paddingBottom: 40,
     borderTopLeftRadius: 32,
@@ -146,30 +150,30 @@ const styles = StyleSheet.create({
   label: {
     marginBottom: 12,
     fontSize: 16,
-    color: '#000',
-    textAlign: 'center',
-    padding:10,
+    color: "#000",
+    textAlign: "center",
+    padding: 10,
   },
   input: {
-    backgroundColor: '#bdbdbd',
+    backgroundColor: "#bdbdbd",
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 14,
     marginBottom: 28,
     fontSize: 16,
-    color: '#000',
+    color: "#000",
   },
   animatedButton: {
     borderRadius: 28,
   },
   touchable: {
     paddingVertical: 16,
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 28,
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 17,
   },
 });
