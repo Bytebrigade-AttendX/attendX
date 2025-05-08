@@ -12,8 +12,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-
+import axios, { AxiosError } from 'axios';
+import { useToast } from 'react-native-toast-notifications';
 export default function LoginScreen() {
+  const Toast=useToast()
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(false);
   const router = useRouter();
@@ -41,12 +43,21 @@ export default function LoginScreen() {
     ]).start();
   }, [isValidEmail]);
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (isValidEmail) {
-      router.push({
-        pathname: '/auth/otp',
-        params: { email },
-      });
+      try {
+        const response = await axios.post(`${process.env.API_BASE_URL}/api/v1/user/loginOtpSend`, { email });
+        if (response.status === 200) {
+          router.push({
+            pathname: '/auth/otp',
+            params: { email },
+          });
+        }
+      } catch (error:any) {
+        Toast.show(error.response.data.message, {
+          type:"danger",placement:'top'
+        })
+      }
     }
   };
 

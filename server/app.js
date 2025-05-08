@@ -1,27 +1,32 @@
-import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import bodyParser from "body-parser";
 import adminRouter from "./routes/admin.route.js";
-import { Server } from "socket.io";
-import http from "http";
 import userRouter from "./routes/user.route.js";
+import { globalErrorHandler } from "./middlewares/error.middleware.js";
+
+// Initialize Express app ONCE
 const app = express();
 
+// Middleware
+app.use(cors({
+  origin: "*", // Allow all origins (for development)
+  methods: ["GET", "POST", "PUT", "DELETE"], // Explicitly allow methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Explicitly allow headers
+  optionsSuccessStatus: 204, // Handle preflight requests
+}));
 
-
-app.use(cors("*"));
-
+// Body parsers (remove redundant ones)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.json({ limit: "16kb" }));
-
-app.use(express.urlencoded({ extended: true, limit: "16kb" }));
-
+// Static files (if needed)
 app.use(express.static("public"));
-
-
+// Routes
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/user", userRouter);
+app.set("host", "0.0.0.0");
+app.use(globalErrorHandler)
+
+// Export the app
 export { app };

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -43,15 +44,22 @@ export default function OTP() {
     if (sanitized.length <= 6) setOtp(sanitized);
   };
 
-  const handleVerify = () => {
-    if (otp === '123456') {
+  const handleVerify = async() => {
+    try {
+      const response =await axios.post(`${process.env.API_BASE_URL}/api/vi/user/loginOtpVerify`, {email,otp})
+      if (otp === '123456') {
       router.push('/main/home');
     } else {
       triggerShake();
       Vibration.vibrate(100);
     }
+    } catch (error) {
+      
+    }
+    
   };
 
+  const handleResend = () => { }
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
   const triggerShake = () => {
@@ -124,7 +132,7 @@ export default function OTP() {
                 <TouchableOpacity onPress={() => router.back()}>
                   <Text style={styles.footerText}>Change E-mail</Text>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={handleResend}>
                   <Text style={styles.footerText}>Resend OTP</Text>
                 </TouchableOpacity>
               </View>

@@ -8,11 +8,12 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-
+import { ToastProvider} from "react-native-toast-notifications"
 export default function MainLayout() {
   const screenHeight = Dimensions.get('window').height;
 
   return (
+    <ToastProvider>
     <View style={styles.root}>
       {/* Optional: add manual top spacer for Android status bar */}
       {Platform.OS === 'android' && (
@@ -27,7 +28,8 @@ export default function MainLayout() {
           <Slot />
         </View>
       </KeyboardAvoidingView>
-    </View>
+      </View>
+    </ToastProvider>
   );
 }
 
