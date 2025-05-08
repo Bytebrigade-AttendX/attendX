@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -13,7 +14,8 @@ import {
   Vibration,
   View,
 } from "react-native";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Toast } from "react-native-toast-notifications";
 export default function OTP() {
   const [otp, setOtp] = useState("");
   const inputRef = useRef<TextInput>(null);
@@ -48,19 +50,29 @@ export default function OTP() {
   const handleVerify = async () => {
     try {
       const response = await axios.post(
-        `${process.env.API_BASE_URL}/api/vi/user/loginOtpVerify`,
+        `https://f04f-2405-201-a43a-10b4-75e6-5a29-c907-1a4.ngrok-free.app/api/v1/user/loginOtpVerify`,
         { email, otp }
       );
-      if (otp === "123456") {
-        router.push("/main/home");
-      } else {
+      if (response.status === 200) {
+        await AsyncStorage.setItem("token", response.data.data.token);
+        await AsyncStorage.setItem("role", response.data.data.role);
+        if (response.data.data.role === "student")
+          router.navigate("/student/home");
+        else router.navigate("/teacher/home");
+      }
+    } catch (error: any) {
+      if (error.response.status === 400) {
         triggerShake();
         Vibration.vibrate(100);
       }
-    } catch (error) {}
+      Toast.show(error.response.data.message, {
+        type: "danger",
+        placement: "top",
+      });
+    }
   };
-  const handleResend = () => {};
 
+  const handleResend = () => {};
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
   const triggerShake = () => {

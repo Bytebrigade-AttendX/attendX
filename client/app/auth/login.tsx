@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import {
   Animated,
   Keyboard,
@@ -12,8 +12,26 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-
+import axios from "axios";
+import { useToast } from "react-native-toast-notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function LoginScreen() {
+  const viewAllKeysAndValues = async () => {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      const result = await AsyncStorage.multiGet(keys);
+      result.forEach(([key, value]) => {
+        console.log(`${key}: ${value}`);
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  useEffect(() => {
+    viewAllKeysAndValues();
+  }, []);
+
+  const Toast = useToast();
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
   const router = useRouter();
@@ -40,14 +58,28 @@ export default function LoginScreen() {
       }),
     ]).start();
   }, [isValidEmail]);
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      const token = await AsyncStorage.getItem("token");
+
+      if (token) {
+        const role = await AsyncStorage.getItem("role");
+        if (role === "student") router.navigate("/student/home");
+        else router.navigate("/teacher/home");
+      } else return false;
+    };
+    checkLoggedIn();
+  }, []);
 
   const handleContinue = async () => {
     if (isValidEmail) {
+      console.log("trying");
       try {
         const response = await axios.post(
-          `${process.env.API_BASE_URL}/api/v1/user/loginOtpSend`,
+          `https://f04f-2405-201-a43a-10b4-75e6-5a29-c907-1a4.ngrok-free.app/api/v1/user/loginOtpSend`,
           { email }
         );
+        console.log(response);
         if (response.status === 200) {
           router.push({
             pathname: "/auth/otp",

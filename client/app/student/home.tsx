@@ -1,5 +1,5 @@
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -7,17 +7,53 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
-import Svg, { Circle, G, Text as TextSvg } from 'react-native-svg';
-import Icon from 'react-native-vector-icons/Ionicons';
-import NotificationPanel from '../student-others/notification';
+} from "react-native";
+import Svg, { Circle, G, Text as TextSvg } from "react-native-svg";
+import Icon from "@react-native-vector-icons/ionicons";
+
+import NotificationPanel from "../student-others/notification";
 
 const subjects = [
-  { id: 1, name: 'DBMS', subcode: 'SUBCODE', professor: 'Prof. Name', total: 22, present: 17 },
-  { id: 2, name: 'Maths', subcode: 'MATH101', professor: 'Prof. Math', total: 25, present: 20 },
-  { id: 3, name: 'OS', subcode: 'OS201', professor: 'Prof. OS', total: 30, present: 26 },
-  { id: 4, name: 'CN', subcode: 'CN301', professor: 'Prof. CN', total: 28, present: 25 },
-  { id: 5, name: 'AI', subcode: 'AI401', professor: 'Prof. AI', total: 18, present: 15 },
+  {
+    id: 1,
+    name: "DBMS",
+    subcode: "SUBCODE",
+    professor: "Prof. Name",
+    total: 22,
+    present: 17,
+  },
+  {
+    id: 2,
+    name: "Maths",
+    subcode: "MATH101",
+    professor: "Prof. Math",
+    total: 25,
+    present: 20,
+  },
+  {
+    id: 3,
+    name: "OS",
+    subcode: "OS201",
+    professor: "Prof. OS",
+    total: 30,
+    present: 26,
+  },
+  {
+    id: 4,
+    name: "CN",
+    subcode: "CN301",
+    professor: "Prof. CN",
+    total: 28,
+    present: 25,
+  },
+  {
+    id: 5,
+    name: "AI",
+    subcode: "AI401",
+    professor: "Prof. AI",
+    total: 18,
+    present: 15,
+  },
 ];
 
 export default function HomeScreen() {
@@ -43,13 +79,16 @@ export default function HomeScreen() {
             subject={subject}
             expanded={expandedId === subject.id}
             onPress={() => toggleExpand(subject.id)}
-            onViewDetails={() => router.push('/student-others/attendance')}
+            onViewDetails={() => router.push("/student-others/attendance")}
           />
         ))}
       </ScrollView>
 
       {/* Render the Notification Panel */}
-      <NotificationPanel visible={showNotification} onClose={() => setShowNotification(false)} />
+      <NotificationPanel
+        visible={showNotification}
+        onClose={() => setShowNotification(false)}
+      />
     </SafeAreaView>
   );
 }
@@ -66,7 +105,11 @@ function SubjectTile({ subject, expanded, onPress, onViewDetails }: any) {
   const strokeWidth = 20;
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={styles.tileWrapper}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.9}
+      style={styles.tileWrapper}
+    >
       <View style={[styles.tile, expanded && styles.tileExpanded]}>
         <View style={styles.tileHeader}>
           <View style={styles.leftSection}>
@@ -75,7 +118,10 @@ function SubjectTile({ subject, expanded, onPress, onViewDetails }: any) {
             <Text style={styles.subDetails}>{professor}</Text>
 
             {expanded && (
-              <TouchableOpacity style={styles.viewButton} onPress={onViewDetails}>
+              <TouchableOpacity
+                style={styles.viewButton}
+                onPress={onViewDetails}
+              >
                 <Text style={styles.buttonText}>View Details</Text>
               </TouchableOpacity>
             )}
@@ -107,7 +153,7 @@ function SubjectTile({ subject, expanded, onPress, onViewDetails }: any) {
               <TextSvg
                 x="43"
                 y="55"
-                fontSize={expanded ? '20' : '16'}
+                fontSize={expanded ? "20" : "16"}
                 fill="#000"
                 textAnchor="middle"
                 fontWeight="bold"
@@ -133,84 +179,84 @@ function SubjectTile({ subject, expanded, onPress, onViewDetails }: any) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   container: {
     paddingHorizontal: 16,
     paddingBottom: 16,
   },
   headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginTop: 20,
     marginBottom: 24,
   },
   header: {
     fontSize: 22,
-    fontWeight: '700',
-    color: '#222',
+    fontWeight: "700",
+    color: "#222",
   },
   tileWrapper: {
     marginBottom: 16,
   },
   tile: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
     borderRadius: 16,
     paddingVertical: 16,
     paddingHorizontal: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.15,
     shadowRadius: 6,
-    elevation: 6,       
+    elevation: 6,
   },
   tileExpanded: {
     paddingVertical: 24,
   },
   tileHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   leftSection: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   rightSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     minWidth: 90,
   },
   subjectName: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
     marginBottom: 4,
   },
   subDetails: {
-    color: '#666',
+    color: "#666",
     fontSize: 12,
   },
   attendanceDetails: {
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     marginTop: 8,
   },
   detailText: {
     fontSize: 13,
-    color: '#444',
+    color: "#444",
   },
   viewButton: {
-    backgroundColor: '#e55373',
+    backgroundColor: "#e55373",
     borderRadius: 20,
     paddingVertical: 6,
     paddingHorizontal: 14,
     marginTop: 16,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 13,
   },
 });

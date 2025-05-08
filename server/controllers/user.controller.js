@@ -29,7 +29,7 @@ const loginOtpVerify = async (req, res) => {
   const user = await prisma.user.findFirst({
     where: { email: email },
   });
-
+  console.log(email, otp);
   if (!user) throw new ApiError(404, "User not found.");
   const role = user.role;
   if (user.otp !== otp || user.otp_expiry < new Date())
