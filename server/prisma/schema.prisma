@@ -79,7 +79,6 @@ model Student {
   
   // Relations
   class     Class              @relation(fields: [class_id], references: [id])
-  attendanceRecords AttendanceRecord[]
 }
 
 model Class {
@@ -129,26 +128,15 @@ model TeacherClass {
 }
 
 model Attendance {
-  id             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  class_id       String             @db.Uuid
-  subject_id     String             @db.Uuid
-  teacher_id     String             @db.Uuid
-  date           DateTime           @default(now())
-  created_at     DateTime           @default(now())
-
-  class          Class              @relation(fields: [class_id], references: [id])
-  subject        Subject            @relation(fields: [subject_id], references: [id])
-  teacher        Teacher            @relation(fields: [teacher_id], references: [id])
-  attendanceRecords AttendanceRecord[]
-}
-
-model AttendanceRecord {
-  id             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  attendance_id  String             @db.Uuid
-  student_id     String             @db.Uuid
-  status         AttendanceStatus
-  created_at     DateTime           @default(now())
-
-  attendance     Attendance         @relation(fields: [attendance_id], references: [id])
-  student        Student            @relation(fields: [student_id], references: [id])
+  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  class_id       String       @db.Uuid
+  subject_id     String       @db.Uuid
+  teacher_id     String       @db.Uuid
+  date           DateTime     @default(now())
+  created_at     DateTime     @default(now())
+  student_records Json        
+  
+  class          Class        @relation(fields: [class_id], references: [id])
+  subject        Subject      @relation(fields: [subject_id], references: [id])
+  teacher        Teacher      @relation(fields: [teacher_id], references: [id])
 }

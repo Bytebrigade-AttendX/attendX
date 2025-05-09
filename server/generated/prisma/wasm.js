@@ -178,20 +178,17 @@ exports.Prisma.AttendanceScalarFieldEnum = {
   subject_id: 'subject_id',
   teacher_id: 'teacher_id',
   date: 'date',
-  created_at: 'created_at'
-};
-
-exports.Prisma.AttendanceRecordScalarFieldEnum = {
-  id: 'id',
-  attendance_id: 'attendance_id',
-  student_id: 'student_id',
-  status: 'status',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  student_records: 'student_records'
 };
 
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -202,6 +199,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.Department = exports.$Enums.Department = {
   CSE: 'CSE',
@@ -223,11 +226,6 @@ exports.Gender = exports.$Enums.Gender = {
   other: 'other'
 };
 
-exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
-  present: 'present',
-  absent: 'absent'
-};
-
 exports.Prisma.ModelName = {
   User: 'User',
   Teacher: 'Teacher',
@@ -236,8 +234,7 @@ exports.Prisma.ModelName = {
   Subject: 'Subject',
   ClassSubject: 'ClassSubject',
   TeacherClass: 'TeacherClass',
-  Attendance: 'Attendance',
-  AttendanceRecord: 'AttendanceRecord'
+  Attendance: 'Attendance'
 };
 
 /**
