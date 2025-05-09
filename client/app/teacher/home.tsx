@@ -59,7 +59,7 @@ const dummyData = [
 export default function TeacherHomeScreen() {
   const router = useRouter();
   const [expandedSemester, setExpandedSemester] = useState(
-    dummyData[0].semester
+    dummyData.length > 0 ? dummyData[0].semester : ""
   );
   const [subjectsBySemester, setSubjectsBySemester] = useState([]);
   const [showOverlay, setShowOverlay] = useState(false);
@@ -92,7 +92,7 @@ export default function TeacherHomeScreen() {
       {/* Top Half */}
       <View style={styles.topSection}>
         <View style={styles.header}>
-          <Text style={styles.greeting}>Hello, {user.name}</Text>
+          <Text style={styles.greeting}>Hello, {user?.name || "Teacher"}</Text>
         </View>
 
         <View style={styles.centerButtonWrapper}>
