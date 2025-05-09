@@ -149,8 +149,8 @@ exports.Prisma.StudentScalarFieldEnum = {
 exports.Prisma.ClassScalarFieldEnum = {
   id: 'id',
   code: 'code',
-  dept: 'dept',
-  year: 'year',
+  branch: 'branch',
+  semester: 'semester',
   created_at: 'created_at'
 };
 
@@ -224,6 +224,17 @@ exports.Gender = exports.$Enums.Gender = {
   male: 'male',
   female: 'female',
   other: 'other'
+};
+
+exports.Semester = exports.$Enums.Semester = {
+  I: 'I',
+  II: 'II',
+  III: 'III',
+  IV: 'IV',
+  V: 'V',
+  VI: 'VI',
+  VII: 'VII',
+  VIII: 'VIII'
 };
 
 exports.Prisma.ModelName = {

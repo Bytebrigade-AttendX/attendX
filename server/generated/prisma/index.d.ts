@@ -58,7 +58,21 @@ export type Attendance = $Result.DefaultSelection<Prisma.$AttendancePayload>
  * Enums
  */
 export namespace $Enums {
-  export const Department: {
+  export const Semester: {
+  I: 'I',
+  II: 'II',
+  III: 'III',
+  IV: 'IV',
+  V: 'V',
+  VI: 'VI',
+  VII: 'VII',
+  VIII: 'VIII'
+};
+
+export type Semester = (typeof Semester)[keyof typeof Semester]
+
+
+export const Department: {
   CSE: 'CSE',
   ECE: 'ECE',
   ME: 'ME',
@@ -95,6 +109,10 @@ export const Role: {
 export type Role = (typeof Role)[keyof typeof Role]
 
 }
+
+export type Semester = $Enums.Semester
+
+export const Semester: typeof $Enums.Semester
 
 export type Department = $Enums.Department
 
@@ -5044,75 +5062,57 @@ export namespace Prisma {
 
   export type AggregateClass = {
     _count: ClassCountAggregateOutputType | null
-    _avg: ClassAvgAggregateOutputType | null
-    _sum: ClassSumAggregateOutputType | null
     _min: ClassMinAggregateOutputType | null
     _max: ClassMaxAggregateOutputType | null
-  }
-
-  export type ClassAvgAggregateOutputType = {
-    year: number | null
-  }
-
-  export type ClassSumAggregateOutputType = {
-    year: number | null
   }
 
   export type ClassMinAggregateOutputType = {
     id: string | null
     code: string | null
-    dept: $Enums.Department | null
-    year: number | null
+    branch: $Enums.Department | null
+    semester: $Enums.Semester | null
     created_at: Date | null
   }
 
   export type ClassMaxAggregateOutputType = {
     id: string | null
     code: string | null
-    dept: $Enums.Department | null
-    year: number | null
+    branch: $Enums.Department | null
+    semester: $Enums.Semester | null
     created_at: Date | null
   }
 
   export type ClassCountAggregateOutputType = {
     id: number
     code: number
-    dept: number
-    year: number
+    branch: number
+    semester: number
     created_at: number
     _all: number
   }
 
 
-  export type ClassAvgAggregateInputType = {
-    year?: true
-  }
-
-  export type ClassSumAggregateInputType = {
-    year?: true
-  }
-
   export type ClassMinAggregateInputType = {
     id?: true
     code?: true
-    dept?: true
-    year?: true
+    branch?: true
+    semester?: true
     created_at?: true
   }
 
   export type ClassMaxAggregateInputType = {
     id?: true
     code?: true
-    dept?: true
-    year?: true
+    branch?: true
+    semester?: true
     created_at?: true
   }
 
   export type ClassCountAggregateInputType = {
     id?: true
     code?: true
-    dept?: true
-    year?: true
+    branch?: true
+    semester?: true
     created_at?: true
     _all?: true
   }
@@ -5155,18 +5155,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: ClassAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: ClassSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: ClassMinAggregateInputType
@@ -5197,8 +5185,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ClassCountAggregateInputType | true
-    _avg?: ClassAvgAggregateInputType
-    _sum?: ClassSumAggregateInputType
     _min?: ClassMinAggregateInputType
     _max?: ClassMaxAggregateInputType
   }
@@ -5206,12 +5192,10 @@ export namespace Prisma {
   export type ClassGroupByOutputType = {
     id: string
     code: string
-    dept: $Enums.Department
-    year: number
+    branch: $Enums.Department
+    semester: $Enums.Semester
     created_at: Date
     _count: ClassCountAggregateOutputType | null
-    _avg: ClassAvgAggregateOutputType | null
-    _sum: ClassSumAggregateOutputType | null
     _min: ClassMinAggregateOutputType | null
     _max: ClassMaxAggregateOutputType | null
   }
@@ -5233,8 +5217,8 @@ export namespace Prisma {
   export type ClassSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     code?: boolean
-    dept?: boolean
-    year?: boolean
+    branch?: boolean
+    semester?: boolean
     created_at?: boolean
     students?: boolean | Class$studentsArgs<ExtArgs>
     subjects?: boolean | Class$subjectsArgs<ExtArgs>
@@ -5246,28 +5230,28 @@ export namespace Prisma {
   export type ClassSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     code?: boolean
-    dept?: boolean
-    year?: boolean
+    branch?: boolean
+    semester?: boolean
     created_at?: boolean
   }, ExtArgs["result"]["class"]>
 
   export type ClassSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     code?: boolean
-    dept?: boolean
-    year?: boolean
+    branch?: boolean
+    semester?: boolean
     created_at?: boolean
   }, ExtArgs["result"]["class"]>
 
   export type ClassSelectScalar = {
     id?: boolean
     code?: boolean
-    dept?: boolean
-    year?: boolean
+    branch?: boolean
+    semester?: boolean
     created_at?: boolean
   }
 
-  export type ClassOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "dept" | "year" | "created_at", ExtArgs["result"]["class"]>
+  export type ClassOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "branch" | "semester" | "created_at", ExtArgs["result"]["class"]>
   export type ClassInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     students?: boolean | Class$studentsArgs<ExtArgs>
     subjects?: boolean | Class$subjectsArgs<ExtArgs>
@@ -5289,8 +5273,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       code: string
-      dept: $Enums.Department
-      year: number
+      branch: $Enums.Department
+      semester: $Enums.Semester
       created_at: Date
     }, ExtArgs["result"]["class"]>
     composites: {}
@@ -5721,8 +5705,8 @@ export namespace Prisma {
   interface ClassFieldRefs {
     readonly id: FieldRef<"Class", 'String'>
     readonly code: FieldRef<"Class", 'String'>
-    readonly dept: FieldRef<"Class", 'Department'>
-    readonly year: FieldRef<"Class", 'Int'>
+    readonly branch: FieldRef<"Class", 'Department'>
+    readonly semester: FieldRef<"Class", 'Semester'>
     readonly created_at: FieldRef<"Class", 'DateTime'>
   }
     
@@ -10562,8 +10546,8 @@ export namespace Prisma {
   export const ClassScalarFieldEnum: {
     id: 'id',
     code: 'code',
-    dept: 'dept',
-    year: 'year',
+    branch: 'branch',
+    semester: 'semester',
     created_at: 'created_at'
   };
 
@@ -10743,6 +10727,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Semester'
+   */
+  export type EnumSemesterFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Semester'>
+    
+
+
+  /**
+   * Reference to a field of type 'Semester[]'
+   */
+  export type ListEnumSemesterFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Semester[]'>
     
 
 
@@ -10972,8 +10970,8 @@ export namespace Prisma {
     NOT?: ClassWhereInput | ClassWhereInput[]
     id?: UuidFilter<"Class"> | string
     code?: StringFilter<"Class"> | string
-    dept?: EnumDepartmentFilter<"Class"> | $Enums.Department
-    year?: IntFilter<"Class"> | number
+    branch?: EnumDepartmentFilter<"Class"> | $Enums.Department
+    semester?: EnumSemesterFilter<"Class"> | $Enums.Semester
     created_at?: DateTimeFilter<"Class"> | Date | string
     students?: StudentListRelationFilter
     subjects?: ClassSubjectListRelationFilter
@@ -10984,8 +10982,8 @@ export namespace Prisma {
   export type ClassOrderByWithRelationInput = {
     id?: SortOrder
     code?: SortOrder
-    dept?: SortOrder
-    year?: SortOrder
+    branch?: SortOrder
+    semester?: SortOrder
     created_at?: SortOrder
     students?: StudentOrderByRelationAggregateInput
     subjects?: ClassSubjectOrderByRelationAggregateInput
@@ -10999,8 +10997,8 @@ export namespace Prisma {
     AND?: ClassWhereInput | ClassWhereInput[]
     OR?: ClassWhereInput[]
     NOT?: ClassWhereInput | ClassWhereInput[]
-    dept?: EnumDepartmentFilter<"Class"> | $Enums.Department
-    year?: IntFilter<"Class"> | number
+    branch?: EnumDepartmentFilter<"Class"> | $Enums.Department
+    semester?: EnumSemesterFilter<"Class"> | $Enums.Semester
     created_at?: DateTimeFilter<"Class"> | Date | string
     students?: StudentListRelationFilter
     subjects?: ClassSubjectListRelationFilter
@@ -11011,14 +11009,12 @@ export namespace Prisma {
   export type ClassOrderByWithAggregationInput = {
     id?: SortOrder
     code?: SortOrder
-    dept?: SortOrder
-    year?: SortOrder
+    branch?: SortOrder
+    semester?: SortOrder
     created_at?: SortOrder
     _count?: ClassCountOrderByAggregateInput
-    _avg?: ClassAvgOrderByAggregateInput
     _max?: ClassMaxOrderByAggregateInput
     _min?: ClassMinOrderByAggregateInput
-    _sum?: ClassSumOrderByAggregateInput
   }
 
   export type ClassScalarWhereWithAggregatesInput = {
@@ -11027,8 +11023,8 @@ export namespace Prisma {
     NOT?: ClassScalarWhereWithAggregatesInput | ClassScalarWhereWithAggregatesInput[]
     id?: UuidWithAggregatesFilter<"Class"> | string
     code?: StringWithAggregatesFilter<"Class"> | string
-    dept?: EnumDepartmentWithAggregatesFilter<"Class"> | $Enums.Department
-    year?: IntWithAggregatesFilter<"Class"> | number
+    branch?: EnumDepartmentWithAggregatesFilter<"Class"> | $Enums.Department
+    semester?: EnumSemesterWithAggregatesFilter<"Class"> | $Enums.Semester
     created_at?: DateTimeWithAggregatesFilter<"Class"> | Date | string
   }
 
@@ -11453,8 +11449,8 @@ export namespace Prisma {
   export type ClassCreateInput = {
     id?: string
     code: string
-    dept: $Enums.Department
-    year: number
+    branch: $Enums.Department
+    semester: $Enums.Semester
     created_at?: Date | string
     students?: StudentCreateNestedManyWithoutClassInput
     subjects?: ClassSubjectCreateNestedManyWithoutClassInput
@@ -11465,8 +11461,8 @@ export namespace Prisma {
   export type ClassUncheckedCreateInput = {
     id?: string
     code: string
-    dept: $Enums.Department
-    year: number
+    branch: $Enums.Department
+    semester: $Enums.Semester
     created_at?: Date | string
     students?: StudentUncheckedCreateNestedManyWithoutClassInput
     subjects?: ClassSubjectUncheckedCreateNestedManyWithoutClassInput
@@ -11477,8 +11473,8 @@ export namespace Prisma {
   export type ClassUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    dept?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
-    year?: IntFieldUpdateOperationsInput | number
+    branch?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    semester?: EnumSemesterFieldUpdateOperationsInput | $Enums.Semester
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUpdateManyWithoutClassNestedInput
     subjects?: ClassSubjectUpdateManyWithoutClassNestedInput
@@ -11489,8 +11485,8 @@ export namespace Prisma {
   export type ClassUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    dept?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
-    year?: IntFieldUpdateOperationsInput | number
+    branch?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    semester?: EnumSemesterFieldUpdateOperationsInput | $Enums.Semester
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUncheckedUpdateManyWithoutClassNestedInput
     subjects?: ClassSubjectUncheckedUpdateManyWithoutClassNestedInput
@@ -11501,24 +11497,24 @@ export namespace Prisma {
   export type ClassCreateManyInput = {
     id?: string
     code: string
-    dept: $Enums.Department
-    year: number
+    branch: $Enums.Department
+    semester: $Enums.Semester
     created_at?: Date | string
   }
 
   export type ClassUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    dept?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
-    year?: IntFieldUpdateOperationsInput | number
+    branch?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    semester?: EnumSemesterFieldUpdateOperationsInput | $Enums.Semester
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ClassUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    dept?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
-    year?: IntFieldUpdateOperationsInput | number
+    branch?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    semester?: EnumSemesterFieldUpdateOperationsInput | $Enums.Semester
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -12089,6 +12085,13 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type EnumSemesterFilter<$PrismaModel = never> = {
+    equals?: $Enums.Semester | EnumSemesterFieldRefInput<$PrismaModel>
+    in?: $Enums.Semester[] | ListEnumSemesterFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Semester[] | ListEnumSemesterFieldRefInput<$PrismaModel>
+    not?: NestedEnumSemesterFilter<$PrismaModel> | $Enums.Semester
+  }
+
   export type StudentListRelationFilter = {
     every?: StudentWhereInput
     some?: StudentWhereInput
@@ -12112,33 +12115,35 @@ export namespace Prisma {
   export type ClassCountOrderByAggregateInput = {
     id?: SortOrder
     code?: SortOrder
-    dept?: SortOrder
-    year?: SortOrder
+    branch?: SortOrder
+    semester?: SortOrder
     created_at?: SortOrder
-  }
-
-  export type ClassAvgOrderByAggregateInput = {
-    year?: SortOrder
   }
 
   export type ClassMaxOrderByAggregateInput = {
     id?: SortOrder
     code?: SortOrder
-    dept?: SortOrder
-    year?: SortOrder
+    branch?: SortOrder
+    semester?: SortOrder
     created_at?: SortOrder
   }
 
   export type ClassMinOrderByAggregateInput = {
     id?: SortOrder
     code?: SortOrder
-    dept?: SortOrder
-    year?: SortOrder
+    branch?: SortOrder
+    semester?: SortOrder
     created_at?: SortOrder
   }
 
-  export type ClassSumOrderByAggregateInput = {
-    year?: SortOrder
+  export type EnumSemesterWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Semester | EnumSemesterFieldRefInput<$PrismaModel>
+    in?: $Enums.Semester[] | ListEnumSemesterFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Semester[] | ListEnumSemesterFieldRefInput<$PrismaModel>
+    not?: NestedEnumSemesterWithAggregatesFilter<$PrismaModel> | $Enums.Semester
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSemesterFilter<$PrismaModel>
+    _max?: NestedEnumSemesterFilter<$PrismaModel>
   }
 
   export type SubjectCountOrderByAggregateInput = {
@@ -12577,6 +12582,10 @@ export namespace Prisma {
     connectOrCreate?: AttendanceCreateOrConnectWithoutClassInput | AttendanceCreateOrConnectWithoutClassInput[]
     createMany?: AttendanceCreateManyClassInputEnvelope
     connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+  }
+
+  export type EnumSemesterFieldUpdateOperationsInput = {
+    set?: $Enums.Semester
   }
 
   export type StudentUpdateManyWithoutClassNestedInput = {
@@ -13178,6 +13187,23 @@ export namespace Prisma {
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
   }
+
+  export type NestedEnumSemesterFilter<$PrismaModel = never> = {
+    equals?: $Enums.Semester | EnumSemesterFieldRefInput<$PrismaModel>
+    in?: $Enums.Semester[] | ListEnumSemesterFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Semester[] | ListEnumSemesterFieldRefInput<$PrismaModel>
+    not?: NestedEnumSemesterFilter<$PrismaModel> | $Enums.Semester
+  }
+
+  export type NestedEnumSemesterWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Semester | EnumSemesterFieldRefInput<$PrismaModel>
+    in?: $Enums.Semester[] | ListEnumSemesterFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Semester[] | ListEnumSemesterFieldRefInput<$PrismaModel>
+    not?: NestedEnumSemesterWithAggregatesFilter<$PrismaModel> | $Enums.Semester
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSemesterFilter<$PrismaModel>
+    _max?: NestedEnumSemesterFilter<$PrismaModel>
+  }
   export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -13498,8 +13524,8 @@ export namespace Prisma {
   export type ClassCreateWithoutStudentsInput = {
     id?: string
     code: string
-    dept: $Enums.Department
-    year: number
+    branch: $Enums.Department
+    semester: $Enums.Semester
     created_at?: Date | string
     subjects?: ClassSubjectCreateNestedManyWithoutClassInput
     teacherClasses?: TeacherClassCreateNestedManyWithoutClassInput
@@ -13509,8 +13535,8 @@ export namespace Prisma {
   export type ClassUncheckedCreateWithoutStudentsInput = {
     id?: string
     code: string
-    dept: $Enums.Department
-    year: number
+    branch: $Enums.Department
+    semester: $Enums.Semester
     created_at?: Date | string
     subjects?: ClassSubjectUncheckedCreateNestedManyWithoutClassInput
     teacherClasses?: TeacherClassUncheckedCreateNestedManyWithoutClassInput
@@ -13577,8 +13603,8 @@ export namespace Prisma {
   export type ClassUpdateWithoutStudentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    dept?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
-    year?: IntFieldUpdateOperationsInput | number
+    branch?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    semester?: EnumSemesterFieldUpdateOperationsInput | $Enums.Semester
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     subjects?: ClassSubjectUpdateManyWithoutClassNestedInput
     teacherClasses?: TeacherClassUpdateManyWithoutClassNestedInput
@@ -13588,8 +13614,8 @@ export namespace Prisma {
   export type ClassUncheckedUpdateWithoutStudentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    dept?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
-    year?: IntFieldUpdateOperationsInput | number
+    branch?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    semester?: EnumSemesterFieldUpdateOperationsInput | $Enums.Semester
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     subjects?: ClassSubjectUncheckedUpdateManyWithoutClassNestedInput
     teacherClasses?: TeacherClassUncheckedUpdateManyWithoutClassNestedInput
@@ -13883,8 +13909,8 @@ export namespace Prisma {
   export type ClassCreateWithoutSubjectsInput = {
     id?: string
     code: string
-    dept: $Enums.Department
-    year: number
+    branch: $Enums.Department
+    semester: $Enums.Semester
     created_at?: Date | string
     students?: StudentCreateNestedManyWithoutClassInput
     teacherClasses?: TeacherClassCreateNestedManyWithoutClassInput
@@ -13894,8 +13920,8 @@ export namespace Prisma {
   export type ClassUncheckedCreateWithoutSubjectsInput = {
     id?: string
     code: string
-    dept: $Enums.Department
-    year: number
+    branch: $Enums.Department
+    semester: $Enums.Semester
     created_at?: Date | string
     students?: StudentUncheckedCreateNestedManyWithoutClassInput
     teacherClasses?: TeacherClassUncheckedCreateNestedManyWithoutClassInput
@@ -13944,8 +13970,8 @@ export namespace Prisma {
   export type ClassUpdateWithoutSubjectsInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    dept?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
-    year?: IntFieldUpdateOperationsInput | number
+    branch?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    semester?: EnumSemesterFieldUpdateOperationsInput | $Enums.Semester
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUpdateManyWithoutClassNestedInput
     teacherClasses?: TeacherClassUpdateManyWithoutClassNestedInput
@@ -13955,8 +13981,8 @@ export namespace Prisma {
   export type ClassUncheckedUpdateWithoutSubjectsInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    dept?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
-    year?: IntFieldUpdateOperationsInput | number
+    branch?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    semester?: EnumSemesterFieldUpdateOperationsInput | $Enums.Semester
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUncheckedUpdateManyWithoutClassNestedInput
     teacherClasses?: TeacherClassUncheckedUpdateManyWithoutClassNestedInput
@@ -14012,8 +14038,8 @@ export namespace Prisma {
   export type ClassCreateWithoutTeacherClassesInput = {
     id?: string
     code: string
-    dept: $Enums.Department
-    year: number
+    branch: $Enums.Department
+    semester: $Enums.Semester
     created_at?: Date | string
     students?: StudentCreateNestedManyWithoutClassInput
     subjects?: ClassSubjectCreateNestedManyWithoutClassInput
@@ -14023,8 +14049,8 @@ export namespace Prisma {
   export type ClassUncheckedCreateWithoutTeacherClassesInput = {
     id?: string
     code: string
-    dept: $Enums.Department
-    year: number
+    branch: $Enums.Department
+    semester: $Enums.Semester
     created_at?: Date | string
     students?: StudentUncheckedCreateNestedManyWithoutClassInput
     subjects?: ClassSubjectUncheckedCreateNestedManyWithoutClassInput
@@ -14096,8 +14122,8 @@ export namespace Prisma {
   export type ClassUpdateWithoutTeacherClassesInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    dept?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
-    year?: IntFieldUpdateOperationsInput | number
+    branch?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    semester?: EnumSemesterFieldUpdateOperationsInput | $Enums.Semester
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUpdateManyWithoutClassNestedInput
     subjects?: ClassSubjectUpdateManyWithoutClassNestedInput
@@ -14107,8 +14133,8 @@ export namespace Prisma {
   export type ClassUncheckedUpdateWithoutTeacherClassesInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    dept?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
-    year?: IntFieldUpdateOperationsInput | number
+    branch?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    semester?: EnumSemesterFieldUpdateOperationsInput | $Enums.Semester
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUncheckedUpdateManyWithoutClassNestedInput
     subjects?: ClassSubjectUncheckedUpdateManyWithoutClassNestedInput
@@ -14147,8 +14173,8 @@ export namespace Prisma {
   export type ClassCreateWithoutAttendancesInput = {
     id?: string
     code: string
-    dept: $Enums.Department
-    year: number
+    branch: $Enums.Department
+    semester: $Enums.Semester
     created_at?: Date | string
     students?: StudentCreateNestedManyWithoutClassInput
     subjects?: ClassSubjectCreateNestedManyWithoutClassInput
@@ -14158,8 +14184,8 @@ export namespace Prisma {
   export type ClassUncheckedCreateWithoutAttendancesInput = {
     id?: string
     code: string
-    dept: $Enums.Department
-    year: number
+    branch: $Enums.Department
+    semester: $Enums.Semester
     created_at?: Date | string
     students?: StudentUncheckedCreateNestedManyWithoutClassInput
     subjects?: ClassSubjectUncheckedCreateNestedManyWithoutClassInput
@@ -14225,8 +14251,8 @@ export namespace Prisma {
   export type ClassUpdateWithoutAttendancesInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    dept?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
-    year?: IntFieldUpdateOperationsInput | number
+    branch?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    semester?: EnumSemesterFieldUpdateOperationsInput | $Enums.Semester
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUpdateManyWithoutClassNestedInput
     subjects?: ClassSubjectUpdateManyWithoutClassNestedInput
@@ -14236,8 +14262,8 @@ export namespace Prisma {
   export type ClassUncheckedUpdateWithoutAttendancesInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    dept?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
-    year?: IntFieldUpdateOperationsInput | number
+    branch?: EnumDepartmentFieldUpdateOperationsInput | $Enums.Department
+    semester?: EnumSemesterFieldUpdateOperationsInput | $Enums.Semester
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     students?: StudentUncheckedUpdateManyWithoutClassNestedInput
     subjects?: ClassSubjectUncheckedUpdateManyWithoutClassNestedInput

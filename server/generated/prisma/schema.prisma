@@ -11,6 +11,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Semester {
+  I
+  II
+  III
+  IV
+  V
+  VI
+  VII
+  VIII
+}
+
 enum Department {
   CSE
   ECE
@@ -84,8 +95,8 @@ model Student {
 model Class {
   id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   code       String     @unique @db.VarChar(50)
-  dept       Department
-  year       Int
+  branch     Department
+  semester   Semester
   created_at DateTime   @default(now())
 
   students       Student[]
