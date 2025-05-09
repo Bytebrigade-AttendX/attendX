@@ -117,8 +117,9 @@ const getMarked = async (req, res) => {
     if (!decodedToken) {
       throw new ApiError(400, "Wrong token provided");
     }
+    const selectedUser = decodedToken.userId;
     const user = await prisma.user.findFirst({
-      where: { id: decodedToken.userId },
+      where: { id: selectedUser },
       select: {
         id: true,
       },
