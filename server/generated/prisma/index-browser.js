@@ -131,7 +131,8 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role',
   gender: 'gender',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  fcmToken: 'fcmToken'
 };
 
 exports.Prisma.TeacherScalarFieldEnum = {
@@ -179,6 +180,8 @@ exports.Prisma.AttendanceScalarFieldEnum = {
   teacher_id: 'teacher_id',
   date: 'date',
   created_at: 'created_at',
+  session_start: 'session_start',
+  session_end: 'session_end',
   student_records: 'student_records'
 };
 

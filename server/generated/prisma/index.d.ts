@@ -1750,6 +1750,7 @@ export namespace Prisma {
     gender: $Enums.Gender | null
     created_at: Date | null
     updated_at: Date | null
+    fcmToken: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1764,6 +1765,7 @@ export namespace Prisma {
     gender: $Enums.Gender | null
     created_at: Date | null
     updated_at: Date | null
+    fcmToken: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1778,6 +1780,7 @@ export namespace Prisma {
     gender: number
     created_at: number
     updated_at: number
+    fcmToken: number
     _all: number
   }
 
@@ -1794,6 +1797,7 @@ export namespace Prisma {
     gender?: true
     created_at?: true
     updated_at?: true
+    fcmToken?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1808,6 +1812,7 @@ export namespace Prisma {
     gender?: true
     created_at?: true
     updated_at?: true
+    fcmToken?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1822,6 +1827,7 @@ export namespace Prisma {
     gender?: true
     created_at?: true
     updated_at?: true
+    fcmToken?: true
     _all?: true
   }
 
@@ -1909,6 +1915,7 @@ export namespace Prisma {
     gender: $Enums.Gender
     created_at: Date
     updated_at: Date
+    fcmToken: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1940,6 +1947,7 @@ export namespace Prisma {
     gender?: boolean
     created_at?: boolean
     updated_at?: boolean
+    fcmToken?: boolean
     teacher?: boolean | User$teacherArgs<ExtArgs>
     student?: boolean | User$studentArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -1956,6 +1964,7 @@ export namespace Prisma {
     gender?: boolean
     created_at?: boolean
     updated_at?: boolean
+    fcmToken?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1970,6 +1979,7 @@ export namespace Prisma {
     gender?: boolean
     created_at?: boolean
     updated_at?: boolean
+    fcmToken?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1984,9 +1994,10 @@ export namespace Prisma {
     gender?: boolean
     created_at?: boolean
     updated_at?: boolean
+    fcmToken?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "otp" | "otp_expiry" | "is_suspended" | "department" | "role" | "gender" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "otp" | "otp_expiry" | "is_suspended" | "department" | "role" | "gender" | "created_at" | "updated_at" | "fcmToken", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     teacher?: boolean | User$teacherArgs<ExtArgs>
     student?: boolean | User$studentArgs<ExtArgs>
@@ -2012,6 +2023,7 @@ export namespace Prisma {
       gender: $Enums.Gender
       created_at: Date
       updated_at: Date
+      fcmToken: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2448,6 +2460,7 @@ export namespace Prisma {
     readonly gender: FieldRef<"User", 'Gender'>
     readonly created_at: FieldRef<"User", 'DateTime'>
     readonly updated_at: FieldRef<"User", 'DateTime'>
+    readonly fcmToken: FieldRef<"User", 'String'>
   }
     
 
@@ -9415,6 +9428,8 @@ export namespace Prisma {
     teacher_id: string | null
     date: Date | null
     created_at: Date | null
+    session_start: Date | null
+    session_end: Date | null
   }
 
   export type AttendanceMaxAggregateOutputType = {
@@ -9424,6 +9439,8 @@ export namespace Prisma {
     teacher_id: string | null
     date: Date | null
     created_at: Date | null
+    session_start: Date | null
+    session_end: Date | null
   }
 
   export type AttendanceCountAggregateOutputType = {
@@ -9433,6 +9450,8 @@ export namespace Prisma {
     teacher_id: number
     date: number
     created_at: number
+    session_start: number
+    session_end: number
     student_records: number
     _all: number
   }
@@ -9445,6 +9464,8 @@ export namespace Prisma {
     teacher_id?: true
     date?: true
     created_at?: true
+    session_start?: true
+    session_end?: true
   }
 
   export type AttendanceMaxAggregateInputType = {
@@ -9454,6 +9475,8 @@ export namespace Prisma {
     teacher_id?: true
     date?: true
     created_at?: true
+    session_start?: true
+    session_end?: true
   }
 
   export type AttendanceCountAggregateInputType = {
@@ -9463,6 +9486,8 @@ export namespace Prisma {
     teacher_id?: true
     date?: true
     created_at?: true
+    session_start?: true
+    session_end?: true
     student_records?: true
     _all?: true
   }
@@ -9546,6 +9571,8 @@ export namespace Prisma {
     teacher_id: string
     date: Date
     created_at: Date
+    session_start: Date | null
+    session_end: Date | null
     student_records: JsonValue
     _count: AttendanceCountAggregateOutputType | null
     _min: AttendanceMinAggregateOutputType | null
@@ -9573,6 +9600,8 @@ export namespace Prisma {
     teacher_id?: boolean
     date?: boolean
     created_at?: boolean
+    session_start?: boolean
+    session_end?: boolean
     student_records?: boolean
     class?: boolean | ClassDefaultArgs<ExtArgs>
     subject?: boolean | SubjectDefaultArgs<ExtArgs>
@@ -9586,6 +9615,8 @@ export namespace Prisma {
     teacher_id?: boolean
     date?: boolean
     created_at?: boolean
+    session_start?: boolean
+    session_end?: boolean
     student_records?: boolean
     class?: boolean | ClassDefaultArgs<ExtArgs>
     subject?: boolean | SubjectDefaultArgs<ExtArgs>
@@ -9599,6 +9630,8 @@ export namespace Prisma {
     teacher_id?: boolean
     date?: boolean
     created_at?: boolean
+    session_start?: boolean
+    session_end?: boolean
     student_records?: boolean
     class?: boolean | ClassDefaultArgs<ExtArgs>
     subject?: boolean | SubjectDefaultArgs<ExtArgs>
@@ -9612,10 +9645,12 @@ export namespace Prisma {
     teacher_id?: boolean
     date?: boolean
     created_at?: boolean
+    session_start?: boolean
+    session_end?: boolean
     student_records?: boolean
   }
 
-  export type AttendanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "class_id" | "subject_id" | "teacher_id" | "date" | "created_at" | "student_records", ExtArgs["result"]["attendance"]>
+  export type AttendanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "class_id" | "subject_id" | "teacher_id" | "date" | "created_at" | "session_start" | "session_end" | "student_records", ExtArgs["result"]["attendance"]>
   export type AttendanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     class?: boolean | ClassDefaultArgs<ExtArgs>
     subject?: boolean | SubjectDefaultArgs<ExtArgs>
@@ -9646,6 +9681,8 @@ export namespace Prisma {
       teacher_id: string
       date: Date
       created_at: Date
+      session_start: Date | null
+      session_end: Date | null
       student_records: Prisma.JsonValue
     }, ExtArgs["result"]["attendance"]>
     composites: {}
@@ -10079,6 +10116,8 @@ export namespace Prisma {
     readonly teacher_id: FieldRef<"Attendance", 'String'>
     readonly date: FieldRef<"Attendance", 'DateTime'>
     readonly created_at: FieldRef<"Attendance", 'DateTime'>
+    readonly session_start: FieldRef<"Attendance", 'DateTime'>
+    readonly session_end: FieldRef<"Attendance", 'DateTime'>
     readonly student_records: FieldRef<"Attendance", 'Json'>
   }
     
@@ -10519,7 +10558,8 @@ export namespace Prisma {
     role: 'role',
     gender: 'gender',
     created_at: 'created_at',
-    updated_at: 'updated_at'
+    updated_at: 'updated_at',
+    fcmToken: 'fcmToken'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -10588,6 +10628,8 @@ export namespace Prisma {
     teacher_id: 'teacher_id',
     date: 'date',
     created_at: 'created_at',
+    session_start: 'session_start',
+    session_end: 'session_end',
     student_records: 'student_records'
   };
 
@@ -10790,6 +10832,7 @@ export namespace Prisma {
     gender?: EnumGenderFilter<"User"> | $Enums.Gender
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
+    fcmToken?: StringNullableFilter<"User"> | string | null
     teacher?: XOR<TeacherNullableScalarRelationFilter, TeacherWhereInput> | null
     student?: XOR<StudentNullableScalarRelationFilter, StudentWhereInput> | null
   }
@@ -10806,6 +10849,7 @@ export namespace Prisma {
     gender?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    fcmToken?: SortOrderInput | SortOrder
     teacher?: TeacherOrderByWithRelationInput
     student?: StudentOrderByWithRelationInput
   }
@@ -10825,6 +10869,7 @@ export namespace Prisma {
     gender?: EnumGenderFilter<"User"> | $Enums.Gender
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
+    fcmToken?: StringNullableFilter<"User"> | string | null
     teacher?: XOR<TeacherNullableScalarRelationFilter, TeacherWhereInput> | null
     student?: XOR<StudentNullableScalarRelationFilter, StudentWhereInput> | null
   }, "id" | "email">
@@ -10841,6 +10886,7 @@ export namespace Prisma {
     gender?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    fcmToken?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -10861,6 +10907,7 @@ export namespace Prisma {
     gender?: EnumGenderWithAggregatesFilter<"User"> | $Enums.Gender
     created_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    fcmToken?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type TeacherWhereInput = {
@@ -11190,6 +11237,8 @@ export namespace Prisma {
     teacher_id?: UuidFilter<"Attendance"> | string
     date?: DateTimeFilter<"Attendance"> | Date | string
     created_at?: DateTimeFilter<"Attendance"> | Date | string
+    session_start?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    session_end?: DateTimeNullableFilter<"Attendance"> | Date | string | null
     student_records?: JsonFilter<"Attendance">
     class?: XOR<ClassScalarRelationFilter, ClassWhereInput>
     subject?: XOR<SubjectScalarRelationFilter, SubjectWhereInput>
@@ -11203,6 +11252,8 @@ export namespace Prisma {
     teacher_id?: SortOrder
     date?: SortOrder
     created_at?: SortOrder
+    session_start?: SortOrderInput | SortOrder
+    session_end?: SortOrderInput | SortOrder
     student_records?: SortOrder
     class?: ClassOrderByWithRelationInput
     subject?: SubjectOrderByWithRelationInput
@@ -11219,6 +11270,8 @@ export namespace Prisma {
     teacher_id?: UuidFilter<"Attendance"> | string
     date?: DateTimeFilter<"Attendance"> | Date | string
     created_at?: DateTimeFilter<"Attendance"> | Date | string
+    session_start?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    session_end?: DateTimeNullableFilter<"Attendance"> | Date | string | null
     student_records?: JsonFilter<"Attendance">
     class?: XOR<ClassScalarRelationFilter, ClassWhereInput>
     subject?: XOR<SubjectScalarRelationFilter, SubjectWhereInput>
@@ -11232,6 +11285,8 @@ export namespace Prisma {
     teacher_id?: SortOrder
     date?: SortOrder
     created_at?: SortOrder
+    session_start?: SortOrderInput | SortOrder
+    session_end?: SortOrderInput | SortOrder
     student_records?: SortOrder
     _count?: AttendanceCountOrderByAggregateInput
     _max?: AttendanceMaxOrderByAggregateInput
@@ -11248,6 +11303,8 @@ export namespace Prisma {
     teacher_id?: UuidWithAggregatesFilter<"Attendance"> | string
     date?: DateTimeWithAggregatesFilter<"Attendance"> | Date | string
     created_at?: DateTimeWithAggregatesFilter<"Attendance"> | Date | string
+    session_start?: DateTimeNullableWithAggregatesFilter<"Attendance"> | Date | string | null
+    session_end?: DateTimeNullableWithAggregatesFilter<"Attendance"> | Date | string | null
     student_records?: JsonWithAggregatesFilter<"Attendance">
   }
 
@@ -11263,6 +11320,7 @@ export namespace Prisma {
     gender: $Enums.Gender
     created_at?: Date | string
     updated_at?: Date | string
+    fcmToken?: string | null
     teacher?: TeacherCreateNestedOneWithoutUserInput
     student?: StudentCreateNestedOneWithoutUserInput
   }
@@ -11279,6 +11337,7 @@ export namespace Prisma {
     gender: $Enums.Gender
     created_at?: Date | string
     updated_at?: Date | string
+    fcmToken?: string | null
     teacher?: TeacherUncheckedCreateNestedOneWithoutUserInput
     student?: StudentUncheckedCreateNestedOneWithoutUserInput
   }
@@ -11295,6 +11354,7 @@ export namespace Prisma {
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
     teacher?: TeacherUpdateOneWithoutUserNestedInput
     student?: StudentUpdateOneWithoutUserNestedInput
   }
@@ -11311,6 +11371,7 @@ export namespace Prisma {
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
     teacher?: TeacherUncheckedUpdateOneWithoutUserNestedInput
     student?: StudentUncheckedUpdateOneWithoutUserNestedInput
   }
@@ -11327,6 +11388,7 @@ export namespace Prisma {
     gender: $Enums.Gender
     created_at?: Date | string
     updated_at?: Date | string
+    fcmToken?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -11341,6 +11403,7 @@ export namespace Prisma {
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -11355,6 +11418,7 @@ export namespace Prisma {
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TeacherCreateInput = {
@@ -11657,6 +11721,8 @@ export namespace Prisma {
     id?: string
     date?: Date | string
     created_at?: Date | string
+    session_start?: Date | string | null
+    session_end?: Date | string | null
     student_records: JsonNullValueInput | InputJsonValue
     class: ClassCreateNestedOneWithoutAttendancesInput
     subject: SubjectCreateNestedOneWithoutAttendancesInput
@@ -11670,6 +11736,8 @@ export namespace Prisma {
     teacher_id: string
     date?: Date | string
     created_at?: Date | string
+    session_start?: Date | string | null
+    session_end?: Date | string | null
     student_records: JsonNullValueInput | InputJsonValue
   }
 
@@ -11677,6 +11745,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student_records?: JsonNullValueInput | InputJsonValue
     class?: ClassUpdateOneRequiredWithoutAttendancesNestedInput
     subject?: SubjectUpdateOneRequiredWithoutAttendancesNestedInput
@@ -11690,6 +11760,8 @@ export namespace Prisma {
     teacher_id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student_records?: JsonNullValueInput | InputJsonValue
   }
 
@@ -11700,6 +11772,8 @@ export namespace Prisma {
     teacher_id: string
     date?: Date | string
     created_at?: Date | string
+    session_start?: Date | string | null
+    session_end?: Date | string | null
     student_records: JsonNullValueInput | InputJsonValue
   }
 
@@ -11707,6 +11781,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student_records?: JsonNullValueInput | InputJsonValue
   }
 
@@ -11717,6 +11793,8 @@ export namespace Prisma {
     teacher_id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student_records?: JsonNullValueInput | InputJsonValue
   }
 
@@ -11837,6 +11915,7 @@ export namespace Prisma {
     gender?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    fcmToken?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -11851,6 +11930,7 @@ export namespace Prisma {
     gender?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    fcmToken?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -11865,6 +11945,7 @@ export namespace Prisma {
     gender?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    fcmToken?: SortOrder
   }
 
   export type UuidWithAggregatesFilter<$PrismaModel = never> = {
@@ -12251,6 +12332,8 @@ export namespace Prisma {
     teacher_id?: SortOrder
     date?: SortOrder
     created_at?: SortOrder
+    session_start?: SortOrder
+    session_end?: SortOrder
     student_records?: SortOrder
   }
 
@@ -12261,6 +12344,8 @@ export namespace Prisma {
     teacher_id?: SortOrder
     date?: SortOrder
     created_at?: SortOrder
+    session_start?: SortOrder
+    session_end?: SortOrder
   }
 
   export type AttendanceMinOrderByAggregateInput = {
@@ -12270,6 +12355,8 @@ export namespace Prisma {
     teacher_id?: SortOrder
     date?: SortOrder
     created_at?: SortOrder
+    session_start?: SortOrder
+    session_end?: SortOrder
   }
   export type JsonWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -13320,6 +13407,7 @@ export namespace Prisma {
     gender: $Enums.Gender
     created_at?: Date | string
     updated_at?: Date | string
+    fcmToken?: string | null
     student?: StudentCreateNestedOneWithoutUserInput
   }
 
@@ -13335,6 +13423,7 @@ export namespace Prisma {
     gender: $Enums.Gender
     created_at?: Date | string
     updated_at?: Date | string
+    fcmToken?: string | null
     student?: StudentUncheckedCreateNestedOneWithoutUserInput
   }
 
@@ -13367,6 +13456,8 @@ export namespace Prisma {
     id?: string
     date?: Date | string
     created_at?: Date | string
+    session_start?: Date | string | null
+    session_end?: Date | string | null
     student_records: JsonNullValueInput | InputJsonValue
     class: ClassCreateNestedOneWithoutAttendancesInput
     subject: SubjectCreateNestedOneWithoutAttendancesInput
@@ -13378,6 +13469,8 @@ export namespace Prisma {
     subject_id: string
     date?: Date | string
     created_at?: Date | string
+    session_start?: Date | string | null
+    session_end?: Date | string | null
     student_records: JsonNullValueInput | InputJsonValue
   }
 
@@ -13414,6 +13507,7 @@ export namespace Prisma {
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
     student?: StudentUpdateOneWithoutUserNestedInput
   }
 
@@ -13429,6 +13523,7 @@ export namespace Prisma {
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
     student?: StudentUncheckedUpdateOneWithoutUserNestedInput
   }
 
@@ -13483,6 +13578,8 @@ export namespace Prisma {
     teacher_id?: UuidFilter<"Attendance"> | string
     date?: DateTimeFilter<"Attendance"> | Date | string
     created_at?: DateTimeFilter<"Attendance"> | Date | string
+    session_start?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    session_end?: DateTimeNullableFilter<"Attendance"> | Date | string | null
     student_records?: JsonFilter<"Attendance">
   }
 
@@ -13498,6 +13595,7 @@ export namespace Prisma {
     gender: $Enums.Gender
     created_at?: Date | string
     updated_at?: Date | string
+    fcmToken?: string | null
     teacher?: TeacherCreateNestedOneWithoutUserInput
   }
 
@@ -13513,6 +13611,7 @@ export namespace Prisma {
     gender: $Enums.Gender
     created_at?: Date | string
     updated_at?: Date | string
+    fcmToken?: string | null
     teacher?: TeacherUncheckedCreateNestedOneWithoutUserInput
   }
 
@@ -13571,6 +13670,7 @@ export namespace Prisma {
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
     teacher?: TeacherUpdateOneWithoutUserNestedInput
   }
 
@@ -13586,6 +13686,7 @@ export namespace Prisma {
     gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
     teacher?: TeacherUncheckedUpdateOneWithoutUserNestedInput
   }
 
@@ -13686,6 +13787,8 @@ export namespace Prisma {
     id?: string
     date?: Date | string
     created_at?: Date | string
+    session_start?: Date | string | null
+    session_end?: Date | string | null
     student_records: JsonNullValueInput | InputJsonValue
     subject: SubjectCreateNestedOneWithoutAttendancesInput
     teacher: TeacherCreateNestedOneWithoutAttendancesInput
@@ -13697,6 +13800,8 @@ export namespace Prisma {
     teacher_id: string
     date?: Date | string
     created_at?: Date | string
+    session_start?: Date | string | null
+    session_end?: Date | string | null
     student_records: JsonNullValueInput | InputJsonValue
   }
 
@@ -13834,6 +13939,8 @@ export namespace Prisma {
     id?: string
     date?: Date | string
     created_at?: Date | string
+    session_start?: Date | string | null
+    session_end?: Date | string | null
     student_records: JsonNullValueInput | InputJsonValue
     class: ClassCreateNestedOneWithoutAttendancesInput
     teacher: TeacherCreateNestedOneWithoutAttendancesInput
@@ -13845,6 +13952,8 @@ export namespace Prisma {
     teacher_id: string
     date?: Date | string
     created_at?: Date | string
+    session_start?: Date | string | null
+    session_end?: Date | string | null
     student_records: JsonNullValueInput | InputJsonValue
   }
 
@@ -14333,6 +14442,8 @@ export namespace Prisma {
     subject_id: string
     date?: Date | string
     created_at?: Date | string
+    session_start?: Date | string | null
+    session_end?: Date | string | null
     student_records: JsonNullValueInput | InputJsonValue
   }
 
@@ -14355,6 +14466,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student_records?: JsonNullValueInput | InputJsonValue
     class?: ClassUpdateOneRequiredWithoutAttendancesNestedInput
     subject?: SubjectUpdateOneRequiredWithoutAttendancesNestedInput
@@ -14366,6 +14479,8 @@ export namespace Prisma {
     subject_id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student_records?: JsonNullValueInput | InputJsonValue
   }
 
@@ -14375,6 +14490,8 @@ export namespace Prisma {
     subject_id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student_records?: JsonNullValueInput | InputJsonValue
   }
 
@@ -14399,6 +14516,8 @@ export namespace Prisma {
     teacher_id: string
     date?: Date | string
     created_at?: Date | string
+    session_start?: Date | string | null
+    session_end?: Date | string | null
     student_records: JsonNullValueInput | InputJsonValue
   }
 
@@ -14451,6 +14570,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student_records?: JsonNullValueInput | InputJsonValue
     subject?: SubjectUpdateOneRequiredWithoutAttendancesNestedInput
     teacher?: TeacherUpdateOneRequiredWithoutAttendancesNestedInput
@@ -14462,6 +14583,8 @@ export namespace Prisma {
     teacher_id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student_records?: JsonNullValueInput | InputJsonValue
   }
 
@@ -14471,6 +14594,8 @@ export namespace Prisma {
     teacher_id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student_records?: JsonNullValueInput | InputJsonValue
   }
 
@@ -14489,6 +14614,8 @@ export namespace Prisma {
     teacher_id: string
     date?: Date | string
     created_at?: Date | string
+    session_start?: Date | string | null
+    session_end?: Date | string | null
     student_records: JsonNullValueInput | InputJsonValue
   }
 
@@ -14523,6 +14650,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student_records?: JsonNullValueInput | InputJsonValue
     class?: ClassUpdateOneRequiredWithoutAttendancesNestedInput
     teacher?: TeacherUpdateOneRequiredWithoutAttendancesNestedInput
@@ -14534,6 +14663,8 @@ export namespace Prisma {
     teacher_id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student_records?: JsonNullValueInput | InputJsonValue
   }
 
@@ -14543,6 +14674,8 @@ export namespace Prisma {
     teacher_id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    session_end?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student_records?: JsonNullValueInput | InputJsonValue
   }
 
