@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
+import Constants from "expo-constants";
 import {
   Animated,
   Keyboard,
@@ -17,6 +18,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Toast } from "react-native-toast-notifications";
 export default function OTP() {
+  const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
   const [otp, setOtp] = useState("");
   const inputRef = useRef<TextInput>(null);
   const router = useRouter();
@@ -50,7 +52,7 @@ export default function OTP() {
   const handleVerify = async () => {
     try {
       const response = await axios.post(
-        `https://f04f-2405-201-a43a-10b4-75e6-5a29-c907-1a4.ngrok-free.app/api/v1/user/loginOtpVerify`,
+        `${API_BASE_URL}/api/v1/user/loginOtpVerify`,
         { email, otp }
       );
       if (response.status === 200) {
