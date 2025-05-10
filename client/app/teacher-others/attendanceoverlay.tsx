@@ -1,6 +1,7 @@
+import axios from "axios";
 import { BlurView } from "expo-blur";
 import { useRouter } from "expo-router";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   Animated,
   Modal,
@@ -12,8 +13,10 @@ import {
   View,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-
+import Constants from "expo-constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function AttendanceOverlay({ visible, onClose }) {
+  const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
   const router = useRouter();
 
   const [branchOpen, setBranchOpen] = useState(false);
@@ -25,9 +28,9 @@ export default function AttendanceOverlay({ visible, onClose }) {
   const [subject, setSubject] = useState(null);
 
   const [branchItems] = useState([
-    { label: "CSE", value: "cse" },
-    { label: "IT", value: "it" },
-    { label: "ECE", value: "ece" },
+    { label: "CSE", value: "CSE" },
+    { label: "IT", value: "IT" },
+    { label: "ECE", value: "ECE" },
   ]);
   const [semesterItems] = useState([
     { label: "Sem I", value: "I" },
@@ -38,7 +41,7 @@ export default function AttendanceOverlay({ visible, onClose }) {
   const [subjectItems] = useState([
     { label: "DSA", value: "CS201" },
     { label: "EMaths", value: "MA101" },
-    { label: "DBMS", value: "CS301" },
+    { label: "DBMS", value: "DBMS" },
   ]);
 
   const shakeAnim = useRef(new Animated.Value(0)).current;
@@ -76,7 +79,7 @@ export default function AttendanceOverlay({ visible, onClose }) {
     ]).start();
   };
 
-  const handleStart = () => {
+  const handleStart = async () => {
     if (allSelected) {
       router.navigate({
         pathname: "/teacher-others/attendancetimer",

@@ -1,3 +1,4 @@
+import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import React, { use, useEffect, useRef, useState } from "react";
 import {
@@ -16,6 +17,7 @@ import axios from "axios";
 import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function LoginScreen() {
+  const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
   const viewAllKeysAndValues = async () => {
     try {
       const keys = await AsyncStorage.getAllKeys();
@@ -73,10 +75,9 @@ export default function LoginScreen() {
 
   const handleContinue = async () => {
     if (isValidEmail) {
-      console.log("trying");
       try {
         const response = await axios.post(
-          `https://f04f-2405-201-a43a-10b4-75e6-5a29-c907-1a4.ngrok-free.app/api/v1/user/loginOtpSend`,
+          `${API_BASE_URL}/api/v1/user/loginOtpSend`,
           { email }
         );
         console.log(response);
