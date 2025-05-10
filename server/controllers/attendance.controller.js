@@ -351,7 +351,7 @@ const storeRecords = async (req, res) => {
     });
 
     const updatedRecords = records.filter(
-      (record) => record.attendanceId !== attendanceIdToRemove
+      (record) => record.attendanceId !== attendanceId
     );
 
     await fs.writeFile(
