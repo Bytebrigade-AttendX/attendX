@@ -324,7 +324,8 @@ const storeRecords = async (req, res) => {
     if (!attendanceRecords || !attendanceId) {
       throw new ApiError(400, "attendanceRecords or attendanceId missing");
     }
-
+    console.log(attendanceRecords);
+    console.log(attendanceId);
     // Convert to studentRecords format
     const studentRecords = {};
     for (const record of attendanceRecords) {

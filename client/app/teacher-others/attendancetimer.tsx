@@ -19,7 +19,11 @@ import { useLocalSearchParams } from "expo-router";
 import { Toast } from "react-native-toast-notifications";
 
 type AttendanceState = "idle" | "inProgress" | "completed";
-
+interface student {
+  id: string;
+  name: string;
+  status: string;
+}
 const RADIUS = 65;
 const STROKE_WIDTH = 10;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
@@ -40,6 +44,8 @@ export default function AttendanceScreen() {
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
   const { branch, semester, subject } = useLocalSearchParams();
 
+  const [record, setRecord] = useState<student[]>([]);
+  const [attendanceId, setAttendanceId] = useState("");
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -75,11 +81,15 @@ export default function AttendanceScreen() {
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
-  const renderStudent = ({ item }: any) => (
+  const renderStudent = ({ item }: { item: Student }) => (
     <View style={styles.studentCard}>
       <View style={{ flexDirection: "column", marginLeft: 10 }}>
         <Text>{item.name}</Text>
-        <Text>{item.regNo}</Text>
+        <Text
+          style={{ color: item.status === "present" ? "#4CAF50" : "#FF4D6D" }}
+        >
+          Status: {item.status}
+        </Text>
       </View>
 
       <View>
@@ -87,7 +97,8 @@ export default function AttendanceScreen() {
           size={25}
           fillColor="#4CAF50"
           iconStyle={{ borderColor: "#4CAF50" }}
-          onPress={(isChecked) => {}}
+          isChecked={item.status === "present"}
+          onPress={() => alterRecord(item.id)}
         />
       </View>
     </View>
@@ -96,8 +107,11 @@ export default function AttendanceScreen() {
   const handleStartAttendance = async () => {
     try {
       const { coords } = await Location.getCurrentPositionAsync({});
-
       const token = await AsyncStorage.getItem("token");
+      Toast.show("Starting attendance session...", {
+        type: "info",
+        placement: "top",
+      });
 
       const response = await axios.post(
         `${API_BASE_URL}/api/v1/attendance/startSession`,
@@ -106,22 +120,87 @@ export default function AttendanceScreen() {
           semester,
           subjectName: subject,
           token,
-          latitude: coords.latitude,
-          longitude: coords.longitude,
+          teacherLatitude: String(coords.latitude),
+          teacherLongitude: String(coords.longitude),
         }
       );
+      console.log("API Response:", JSON.stringify(response.data, null, 2));
+      // Only update state if the API call was successful
+      Toast.show("Attendance session started successfully!", {
+        type: "success",
+        placement: "top",
+      });
 
       setAttendanceState("inProgress");
       setTimer(180);
       animatedValue.setValue(0);
-      console.log("Session started:", response.data);
-    } catch (error) {
-      console.error("Start session error:", error);
-      Toast.show("Failed to start attendance", {
-        type: "danger",
-        placement: "top",
-      });
+    } catch (error: any) {
+      console.log(error.response);
+      console.log("err");
+      Toast.show(
+        "Failed to start attendance: " +
+          (error.response?.data?.message || error.message),
+        {
+          type: "danger",
+          placement: "top",
+          duration: 4000,
+        }
+      );
     }
+  };
+  const handleStopAttendance = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const response = await axios.post(
+        `${API_BASE_URL}/api/v1/attendance/endSession`,
+        {
+          token,
+        }
+      );
+      setAttendanceState("completed");
+      setRecord(response.data.data.combinedList);
+      setAttendanceId(response.data.data.attendanceId);
+      console.log(
+        "API Response at stop:",
+        JSON.stringify(response?.data, null, 2)
+      );
+    } catch (error: any) {
+      console.log(error.response.data);
+    }
+  };
+  const handleSaveAttedance = async () => {
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/api/v1/attendance/storeRecords`,
+        { attendanceRecords: record, attendanceId: attendanceId }
+      );
+      console.log(response.data);
+      router.replace("/teacher/home");
+    } catch (error: any) {
+      console.log(error.response.data);
+    }
+  };
+  useEffect(() => {
+    console.log(record);
+  }, [record]);
+  useEffect(() => {
+    console.log(attendanceId);
+  }, [attendanceId]);
+  const alterRecord = (id: string) => {
+    setRecord((currentRecord) => {
+      // Create a new array to avoid mutating state directly
+      return currentRecord.map((student) => {
+        if (student.id === id) {
+          // Toggle the status for the matching student
+          return {
+            ...student,
+            status: student.status === "absent" ? "present" : "absent",
+          };
+        }
+        // Return other students unchanged
+        return student;
+      });
+    });
   };
 
   return (
@@ -203,7 +282,7 @@ export default function AttendanceScreen() {
         {attendanceState === "inProgress" && (
           <TouchableOpacity
             style={styles.stopButton}
-            onPress={() => setAttendanceState("completed")}
+            onPress={handleStopAttendance}
           >
             <Text style={styles.buttonText}>Stop Attendance</Text>
           </TouchableOpacity>
@@ -213,7 +292,7 @@ export default function AttendanceScreen() {
           <>
             <TouchableOpacity
               style={styles.saveButton}
-              onPress={() => router.replace("/teacher/home")}
+              onPress={handleSaveAttedance}
             >
               <Text style={styles.buttonText}>Save Attendance</Text>
             </TouchableOpacity>
@@ -224,8 +303,8 @@ export default function AttendanceScreen() {
         <>
           <Text style={styles.subHeading}>List of Students</Text>
           <FlatList
-            data={dummyStudents}
-            keyExtractor={(_, index) => index.toString()}
+            data={record}
+            keyExtractor={(item) => item.id}
             renderItem={renderStudent}
             contentContainerStyle={{ paddingBottom: 100 }}
           />
