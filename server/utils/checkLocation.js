@@ -26,3 +26,5 @@ export const validateLocation = (lat1, lon1, lat2, lon2, maxDistance) => {
   console.log(distance <= maxDistance);
   return distance <= maxDistance;
 };
+
+export default validateLocation;

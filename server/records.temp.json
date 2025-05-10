@@ -1,11 +1,12 @@
 [
   {
-    "attendanceId": "ceff62d0-f6c0-4a5d-bd05-453c7d3919a8",
-    "teacherLatitude": null,
-    "teacherLongitude": null,
+    "attendanceId": "50c0795e-951e-402b-bdd2-dabbdd41c2c8",
+    "teacherLatitude": "23.659882670054827",
+    "teacherLongitude": "86.47520297782246",
+    "teacherId": "f7d3fd93-4892-4bc7-864f-e7542d1b353b",
     "studentRecords": {
       "7922bff3-d8dc-4c65-bd9f-de1aa945d7cb": {
-        "status": "absent"
+        "status": "present"
       },
       "2e23f00d-8f6d-45dd-9770-6761637d0809": {
         "status": "absent"

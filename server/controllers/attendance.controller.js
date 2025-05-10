@@ -5,9 +5,17 @@ import { promises as fs } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import jwt from "jsonwebtoken";
+import validateLocation from "../utils/checkLocation.js";
 
 const startSession = async (req, res) => {
-  const { branch, semester, subjectName, teacherId } = req.body;
+  const {
+    branch,
+    semester,
+    subjectName,
+    teacherId,
+    teacherLatitude,
+    teacherLongitude,
+  } = req.body;
   try {
     let records = [];
     const __filename = fileURLToPath(import.meta.url);
@@ -93,6 +101,8 @@ const startSession = async (req, res) => {
         class_id: classObj.id,
         subject_id: subject.id, // Use the subject ID from the class query
         teacher_id: teacherId,
+        teacherLatitude: teacherLatitude,
+        teacherLongitude: teacherLongitude,
         date: sessionStart,
         session_start: sessionStart,
         session_end: sessionEnd,
@@ -104,6 +114,7 @@ const startSession = async (req, res) => {
       attendanceId: attendance.id,
       teacherLatitude: attendance.teacherLatitude,
       teacherLongitude: attendance.teacherLongitude,
+      teacherId: teacherId,
       studentRecords: studentRecords,
     });
 
@@ -128,74 +139,168 @@ const startSession = async (req, res) => {
 
 const getMarked = async (req, res) => {
   try {
-    let records = [];
-    const { attendanceId, token } = req.body;
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    const filePath = path.resolve(__dirname, "../records.temp.json");
-    const rawData = await fs.readFile(filePath, "utf-8");
-    records = rawData ? JSON.parse(rawData) : [];
+    const { attendanceId, token, studentLat, studentLon } = req.body;
+
     if (!token) {
       throw new ApiError(400, "Invalid login");
     }
+
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    if (!decodedToken) {
+    const selectedUser = decodedToken.userId;
+
+    if (!selectedUser) {
       throw new ApiError(400, "Wrong token provided");
     }
-    const selectedUser = decodedToken.userId;
+
     const user = await prisma.user.findFirst({
       where: { id: selectedUser },
-      select: {
-        id: true,
-      },
+      select: { id: true },
     });
 
     if (!user) {
       throw new ApiError(400, "User not found");
     }
 
-    const existingRecord = records.find(
+    // Read records from file
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const filePath = path.resolve(__dirname, "../records.temp.json");
+    const rawData = await fs.readFile(filePath, "utf-8");
+    const records = rawData ? JSON.parse(rawData) : [];
+
+    // Find the correct attendance record
+    const attendanceRecord = records.find(
       (record) => record.attendanceId === attendanceId
     );
 
-    if (existingRecord) {
-      existingRecord.students.push({
-        studentId: selectedUser,
-        status: "present",
-      });
-    } else {
-      const newRecord = {
-        attendanceId,
-        students: [
-          {
-            studentId: selectedUser,
-            status: "present",
-          },
-        ],
-      };
-      records.push(newRecord);
+    if (!attendanceRecord) {
+      throw new ApiError(404, "Attendance record not found");
     }
 
+    // Validate student's location
+    const isPresentInRadius = validateLocation(
+      parseFloat(attendanceRecord.teacherLatitude),
+      parseFloat(attendanceRecord.teacherLongitude),
+      parseFloat(studentLat),
+      parseFloat(studentLon),
+      20
+    );
+
+    if (!isPresentInRadius) {
+      return res.status(403).json({
+        message: "Student not within required range. Attendance not marked.",
+      });
+    }
+
+    // Check if student exists in studentRecords and update status
+    if (
+      attendanceRecord.studentRecords &&
+      attendanceRecord.studentRecords[selectedUser]
+    ) {
+      attendanceRecord.studentRecords[selectedUser].status = "present";
+    } else {
+      // Optional: Add the student if not already in record
+      attendanceRecord.studentRecords[selectedUser] = { status: "present" };
+    }
+
+    // Write updated data back to the file
     await fs.writeFile(filePath, JSON.stringify(records, null, 2));
-    console.log("Attendance record updated successfully");
+    console.log("Attendance updated for student", selectedUser);
 
-    // const attendanceRecord = {
-    //   attendanceId: `${attendanceId}`,
-    //   students: {
-    //     studentId: `${selectedUser}`,
-    //     status: "present",
-    //   },
-    // };
-
-    // records.push(attendanceRecord);
-
-    // // Write the updated data back
-    // await fs.writeFile(filePath, JSON.stringify(subjects, null, 2));
-
-    return res.status(200).json({ message: "Written Record Successfully" });
+    return res.status(200).json({ message: "Marked present successfully" });
   } catch (error) {
-    console.log(error.message);
+    console.error("Error in getMarked:", error.message);
+    return res.status(400).json({ error: error.message });
   }
 };
 
-export { startSession, getMarked };
+const endSession = async (req, res) => {
+  const { token } = req.body;
+  if (!token) {
+    throw new ApiError(400, "Invalid login");
+  }
+
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  const teacherId = decodedToken.userId;
+
+  if (!teacherId) {
+    throw new ApiError(400, "Wrong token provided");
+  }
+
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const filePath = path.resolve(__dirname, "../records.temp.json");
+  const rawData = await fs.readFile(filePath, "utf-8");
+  const records = rawData ? JSON.parse(rawData) : [];
+
+  const attendanceRecord = records.find(
+    (record) => record.teacherId === teacherId
+  );
+
+  if (!attendanceRecord) {
+    throw new ApiError(404, "Attendance record not found");
+  }
+
+  const response = attendanceRecord.studentRecords;
+
+  const studentIds = Object.keys(attendanceRecord.studentRecords);
+  // console.log(studentIds);
+  // const studentsWithNames = await prisma.student.findMany({
+  //   where: {
+  //     id: {
+  //       in: studentIds,
+  //     },
+  //   },
+  //   include: {
+  //     user: {
+  //       select: {
+  //         name: true,
+  //       },
+  //     },
+  //   },
+  // });
+
+  // const namesList = studentsWithNames.map((student) => ({
+  //   id: student.id,
+  //   name: student.user.name,
+  // }));
+
+  // const combinedList = namesList.map((student) => ({
+  //   id: student.id,
+  //   name: student.name,
+  //   status: response[student.id]?.status || "absent", // default to 'absent' if missing
+  // }));
+
+  const studentsWithStatus = await prisma.student.findMany({
+    where: {
+      id: {
+        in: studentIds,
+      },
+    },
+    select: {
+      id: true,
+      user: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  const combinedList = studentsWithStatus.map((student) => ({
+    id: student.id,
+    name: student.user.name,
+    status: response[student.id]?.status || "absent",
+  }));
+
+  // console.log(combinedList);
+  return res
+    .status(200)
+    .json(new ApiResponse(200, combinedList, "Records sent successfully"));
+};
+
+const storeRecords = async (req, res) => {};
+
+// TODO: Update records to be added
+
+export { startSession, getMarked, storeRecords, endSession };

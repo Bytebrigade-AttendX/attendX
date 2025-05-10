@@ -1,5 +1,6 @@
 import prisma from "../db/db.config.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiError } from "../utils/ApiError.js";
 import jwt from "jsonwebtoken";
 
 const getUserInfo = async (req, res) => {
