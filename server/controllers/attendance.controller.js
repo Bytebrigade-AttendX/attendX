@@ -1,12 +1,20 @@
 import prisma from "../db/db.config.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import fs from "fs";
+import { promises as fs } from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
+import jwt from "jsonwebtoken";
 
 const startSession = async (req, res) => {
   const { branch, semester, subjectName, teacherId } = req.body;
   try {
+    let records = [];
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const filePath = path.resolve(__dirname, "../records.temp.json");
+    const rawData = await fs.readFile(filePath, "utf-8");
+    records = rawData ? JSON.parse(rawData) : [];
     // First, find the class that matches the branch and semester
     const classObj = await prisma.class.findFirst({
       where: {
@@ -64,9 +72,11 @@ const startSession = async (req, res) => {
     // Initialize student_records as JSON (e.g., empty or with default attendance status)
     const studentRecords = students.reduce((acc, student) => {
       console.log("Error maybe here");
-      acc[student.id] = { status: "absent" }; // Default to absent
+      acc[student.id] = { status: "absent" };
       return acc;
     }, {});
+
+    console.log(studentRecords);
 
     const subject = await prisma.subject.findFirst({
       where: {
@@ -78,7 +88,7 @@ const startSession = async (req, res) => {
     });
 
     // Create the attendance record
-    await prisma.attendance.create({
+    const attendance = await prisma.attendance.create({
       data: {
         class_id: classObj.id,
         subject_id: subject.id, // Use the subject ID from the class query
@@ -89,6 +99,18 @@ const startSession = async (req, res) => {
         student_records: studentRecords,
       },
     });
+
+    records.push({
+      attendanceId: attendance.id,
+      teacherLatitude: attendance.teacherLatitude,
+      teacherLongitude: attendance.teacherLongitude,
+      studentRecords: studentRecords,
+    });
+
+    console.log(attendance);
+
+    await fs.writeFile(filePath, JSON.stringify(records, null, 2));
+    console.log("Attendance record updated successfully");
 
     return res
       .status(200)
@@ -106,10 +128,13 @@ const startSession = async (req, res) => {
 
 const getMarked = async (req, res) => {
   try {
+    let records = [];
     const { attendanceId, token } = req.body;
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
     const filePath = path.resolve(__dirname, "../records.temp.json");
     const rawData = await fs.readFile(filePath, "utf-8");
-    subjects = rawData ? JSON.parse(rawData) : [];
+    records = rawData ? JSON.parse(rawData) : [];
     if (!token) {
       throw new ApiError(400, "Invalid login");
     }
@@ -124,11 +149,53 @@ const getMarked = async (req, res) => {
         id: true,
       },
     });
+
     if (!user) {
       throw new ApiError(400, "User not found");
     }
-    return res.status(200).json({ message: "Success" });
-  } catch (error) {}
+
+    const existingRecord = records.find(
+      (record) => record.attendanceId === attendanceId
+    );
+
+    if (existingRecord) {
+      existingRecord.students.push({
+        studentId: selectedUser,
+        status: "present",
+      });
+    } else {
+      const newRecord = {
+        attendanceId,
+        students: [
+          {
+            studentId: selectedUser,
+            status: "present",
+          },
+        ],
+      };
+      records.push(newRecord);
+    }
+
+    await fs.writeFile(filePath, JSON.stringify(records, null, 2));
+    console.log("Attendance record updated successfully");
+
+    // const attendanceRecord = {
+    //   attendanceId: `${attendanceId}`,
+    //   students: {
+    //     studentId: `${selectedUser}`,
+    //     status: "present",
+    //   },
+    // };
+
+    // records.push(attendanceRecord);
+
+    // // Write the updated data back
+    // await fs.writeFile(filePath, JSON.stringify(subjects, null, 2));
+
+    return res.status(200).json({ message: "Written Record Successfully" });
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 export { startSession, getMarked };

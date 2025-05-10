@@ -140,12 +140,15 @@ model TeacherClass {
 
 model Attendance {
   id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  teacherLatitude   String?
+  teacherLongitude  String?
+  teacherAltitude   String?
   class_id       String       @db.Uuid
   subject_id     String       @db.Uuid
   teacher_id     String       @db.Uuid
   date           DateTime     @default(now())
   created_at     DateTime     @default(now())
-  session_start  DateTime?     @default(now())
+  session_start  DateTime?    @default(now())
   session_end    DateTime?    
   student_records Json        
   

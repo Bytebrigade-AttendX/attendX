@@ -7,6 +7,6 @@ import {
 const attendanceRouter = Router();
 
 attendanceRouter.route("/startSession").post(startSession);
-attendanceRouter.route("/getMarked").get(getMarked);
+attendanceRouter.route("/getMarked").post(getMarked);
 
 export default attendanceRouter;

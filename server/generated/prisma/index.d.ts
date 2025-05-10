@@ -9423,6 +9423,9 @@ export namespace Prisma {
 
   export type AttendanceMinAggregateOutputType = {
     id: string | null
+    teacherLatitude: string | null
+    teacherLongitude: string | null
+    teacherAltitude: string | null
     class_id: string | null
     subject_id: string | null
     teacher_id: string | null
@@ -9434,6 +9437,9 @@ export namespace Prisma {
 
   export type AttendanceMaxAggregateOutputType = {
     id: string | null
+    teacherLatitude: string | null
+    teacherLongitude: string | null
+    teacherAltitude: string | null
     class_id: string | null
     subject_id: string | null
     teacher_id: string | null
@@ -9445,6 +9451,9 @@ export namespace Prisma {
 
   export type AttendanceCountAggregateOutputType = {
     id: number
+    teacherLatitude: number
+    teacherLongitude: number
+    teacherAltitude: number
     class_id: number
     subject_id: number
     teacher_id: number
@@ -9459,6 +9468,9 @@ export namespace Prisma {
 
   export type AttendanceMinAggregateInputType = {
     id?: true
+    teacherLatitude?: true
+    teacherLongitude?: true
+    teacherAltitude?: true
     class_id?: true
     subject_id?: true
     teacher_id?: true
@@ -9470,6 +9482,9 @@ export namespace Prisma {
 
   export type AttendanceMaxAggregateInputType = {
     id?: true
+    teacherLatitude?: true
+    teacherLongitude?: true
+    teacherAltitude?: true
     class_id?: true
     subject_id?: true
     teacher_id?: true
@@ -9481,6 +9496,9 @@ export namespace Prisma {
 
   export type AttendanceCountAggregateInputType = {
     id?: true
+    teacherLatitude?: true
+    teacherLongitude?: true
+    teacherAltitude?: true
     class_id?: true
     subject_id?: true
     teacher_id?: true
@@ -9566,6 +9584,9 @@ export namespace Prisma {
 
   export type AttendanceGroupByOutputType = {
     id: string
+    teacherLatitude: string | null
+    teacherLongitude: string | null
+    teacherAltitude: string | null
     class_id: string
     subject_id: string
     teacher_id: string
@@ -9595,6 +9616,9 @@ export namespace Prisma {
 
   export type AttendanceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    teacherLatitude?: boolean
+    teacherLongitude?: boolean
+    teacherAltitude?: boolean
     class_id?: boolean
     subject_id?: boolean
     teacher_id?: boolean
@@ -9610,6 +9634,9 @@ export namespace Prisma {
 
   export type AttendanceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    teacherLatitude?: boolean
+    teacherLongitude?: boolean
+    teacherAltitude?: boolean
     class_id?: boolean
     subject_id?: boolean
     teacher_id?: boolean
@@ -9625,6 +9652,9 @@ export namespace Prisma {
 
   export type AttendanceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    teacherLatitude?: boolean
+    teacherLongitude?: boolean
+    teacherAltitude?: boolean
     class_id?: boolean
     subject_id?: boolean
     teacher_id?: boolean
@@ -9640,6 +9670,9 @@ export namespace Prisma {
 
   export type AttendanceSelectScalar = {
     id?: boolean
+    teacherLatitude?: boolean
+    teacherLongitude?: boolean
+    teacherAltitude?: boolean
     class_id?: boolean
     subject_id?: boolean
     teacher_id?: boolean
@@ -9650,7 +9683,7 @@ export namespace Prisma {
     student_records?: boolean
   }
 
-  export type AttendanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "class_id" | "subject_id" | "teacher_id" | "date" | "created_at" | "session_start" | "session_end" | "student_records", ExtArgs["result"]["attendance"]>
+  export type AttendanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "teacherLatitude" | "teacherLongitude" | "teacherAltitude" | "class_id" | "subject_id" | "teacher_id" | "date" | "created_at" | "session_start" | "session_end" | "student_records", ExtArgs["result"]["attendance"]>
   export type AttendanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     class?: boolean | ClassDefaultArgs<ExtArgs>
     subject?: boolean | SubjectDefaultArgs<ExtArgs>
@@ -9676,6 +9709,9 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      teacherLatitude: string | null
+      teacherLongitude: string | null
+      teacherAltitude: string | null
       class_id: string
       subject_id: string
       teacher_id: string
@@ -10111,6 +10147,9 @@ export namespace Prisma {
    */
   interface AttendanceFieldRefs {
     readonly id: FieldRef<"Attendance", 'String'>
+    readonly teacherLatitude: FieldRef<"Attendance", 'String'>
+    readonly teacherLongitude: FieldRef<"Attendance", 'String'>
+    readonly teacherAltitude: FieldRef<"Attendance", 'String'>
     readonly class_id: FieldRef<"Attendance", 'String'>
     readonly subject_id: FieldRef<"Attendance", 'String'>
     readonly teacher_id: FieldRef<"Attendance", 'String'>
@@ -10623,6 +10662,9 @@ export namespace Prisma {
 
   export const AttendanceScalarFieldEnum: {
     id: 'id',
+    teacherLatitude: 'teacherLatitude',
+    teacherLongitude: 'teacherLongitude',
+    teacherAltitude: 'teacherAltitude',
     class_id: 'class_id',
     subject_id: 'subject_id',
     teacher_id: 'teacher_id',
@@ -11232,6 +11274,9 @@ export namespace Prisma {
     OR?: AttendanceWhereInput[]
     NOT?: AttendanceWhereInput | AttendanceWhereInput[]
     id?: UuidFilter<"Attendance"> | string
+    teacherLatitude?: StringNullableFilter<"Attendance"> | string | null
+    teacherLongitude?: StringNullableFilter<"Attendance"> | string | null
+    teacherAltitude?: StringNullableFilter<"Attendance"> | string | null
     class_id?: UuidFilter<"Attendance"> | string
     subject_id?: UuidFilter<"Attendance"> | string
     teacher_id?: UuidFilter<"Attendance"> | string
@@ -11247,6 +11292,9 @@ export namespace Prisma {
 
   export type AttendanceOrderByWithRelationInput = {
     id?: SortOrder
+    teacherLatitude?: SortOrderInput | SortOrder
+    teacherLongitude?: SortOrderInput | SortOrder
+    teacherAltitude?: SortOrderInput | SortOrder
     class_id?: SortOrder
     subject_id?: SortOrder
     teacher_id?: SortOrder
@@ -11265,6 +11313,9 @@ export namespace Prisma {
     AND?: AttendanceWhereInput | AttendanceWhereInput[]
     OR?: AttendanceWhereInput[]
     NOT?: AttendanceWhereInput | AttendanceWhereInput[]
+    teacherLatitude?: StringNullableFilter<"Attendance"> | string | null
+    teacherLongitude?: StringNullableFilter<"Attendance"> | string | null
+    teacherAltitude?: StringNullableFilter<"Attendance"> | string | null
     class_id?: UuidFilter<"Attendance"> | string
     subject_id?: UuidFilter<"Attendance"> | string
     teacher_id?: UuidFilter<"Attendance"> | string
@@ -11280,6 +11331,9 @@ export namespace Prisma {
 
   export type AttendanceOrderByWithAggregationInput = {
     id?: SortOrder
+    teacherLatitude?: SortOrderInput | SortOrder
+    teacherLongitude?: SortOrderInput | SortOrder
+    teacherAltitude?: SortOrderInput | SortOrder
     class_id?: SortOrder
     subject_id?: SortOrder
     teacher_id?: SortOrder
@@ -11298,6 +11352,9 @@ export namespace Prisma {
     OR?: AttendanceScalarWhereWithAggregatesInput[]
     NOT?: AttendanceScalarWhereWithAggregatesInput | AttendanceScalarWhereWithAggregatesInput[]
     id?: UuidWithAggregatesFilter<"Attendance"> | string
+    teacherLatitude?: StringNullableWithAggregatesFilter<"Attendance"> | string | null
+    teacherLongitude?: StringNullableWithAggregatesFilter<"Attendance"> | string | null
+    teacherAltitude?: StringNullableWithAggregatesFilter<"Attendance"> | string | null
     class_id?: UuidWithAggregatesFilter<"Attendance"> | string
     subject_id?: UuidWithAggregatesFilter<"Attendance"> | string
     teacher_id?: UuidWithAggregatesFilter<"Attendance"> | string
@@ -11719,6 +11776,9 @@ export namespace Prisma {
 
   export type AttendanceCreateInput = {
     id?: string
+    teacherLatitude?: string | null
+    teacherLongitude?: string | null
+    teacherAltitude?: string | null
     date?: Date | string
     created_at?: Date | string
     session_start?: Date | string | null
@@ -11731,6 +11791,9 @@ export namespace Prisma {
 
   export type AttendanceUncheckedCreateInput = {
     id?: string
+    teacherLatitude?: string | null
+    teacherLongitude?: string | null
+    teacherAltitude?: string | null
     class_id: string
     subject_id: string
     teacher_id: string
@@ -11743,6 +11806,9 @@ export namespace Prisma {
 
   export type AttendanceUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    teacherLatitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherLongitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherAltitude?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -11755,6 +11821,9 @@ export namespace Prisma {
 
   export type AttendanceUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    teacherLatitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherLongitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherAltitude?: NullableStringFieldUpdateOperationsInput | string | null
     class_id?: StringFieldUpdateOperationsInput | string
     subject_id?: StringFieldUpdateOperationsInput | string
     teacher_id?: StringFieldUpdateOperationsInput | string
@@ -11767,6 +11836,9 @@ export namespace Prisma {
 
   export type AttendanceCreateManyInput = {
     id?: string
+    teacherLatitude?: string | null
+    teacherLongitude?: string | null
+    teacherAltitude?: string | null
     class_id: string
     subject_id: string
     teacher_id: string
@@ -11779,6 +11851,9 @@ export namespace Prisma {
 
   export type AttendanceUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    teacherLatitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherLongitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherAltitude?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -11788,6 +11863,9 @@ export namespace Prisma {
 
   export type AttendanceUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    teacherLatitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherLongitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherAltitude?: NullableStringFieldUpdateOperationsInput | string | null
     class_id?: StringFieldUpdateOperationsInput | string
     subject_id?: StringFieldUpdateOperationsInput | string
     teacher_id?: StringFieldUpdateOperationsInput | string
@@ -12327,6 +12405,9 @@ export namespace Prisma {
 
   export type AttendanceCountOrderByAggregateInput = {
     id?: SortOrder
+    teacherLatitude?: SortOrder
+    teacherLongitude?: SortOrder
+    teacherAltitude?: SortOrder
     class_id?: SortOrder
     subject_id?: SortOrder
     teacher_id?: SortOrder
@@ -12339,6 +12420,9 @@ export namespace Prisma {
 
   export type AttendanceMaxOrderByAggregateInput = {
     id?: SortOrder
+    teacherLatitude?: SortOrder
+    teacherLongitude?: SortOrder
+    teacherAltitude?: SortOrder
     class_id?: SortOrder
     subject_id?: SortOrder
     teacher_id?: SortOrder
@@ -12350,6 +12434,9 @@ export namespace Prisma {
 
   export type AttendanceMinOrderByAggregateInput = {
     id?: SortOrder
+    teacherLatitude?: SortOrder
+    teacherLongitude?: SortOrder
+    teacherAltitude?: SortOrder
     class_id?: SortOrder
     subject_id?: SortOrder
     teacher_id?: SortOrder
@@ -13454,6 +13541,9 @@ export namespace Prisma {
 
   export type AttendanceCreateWithoutTeacherInput = {
     id?: string
+    teacherLatitude?: string | null
+    teacherLongitude?: string | null
+    teacherAltitude?: string | null
     date?: Date | string
     created_at?: Date | string
     session_start?: Date | string | null
@@ -13465,6 +13555,9 @@ export namespace Prisma {
 
   export type AttendanceUncheckedCreateWithoutTeacherInput = {
     id?: string
+    teacherLatitude?: string | null
+    teacherLongitude?: string | null
+    teacherAltitude?: string | null
     class_id: string
     subject_id: string
     date?: Date | string
@@ -13573,6 +13666,9 @@ export namespace Prisma {
     OR?: AttendanceScalarWhereInput[]
     NOT?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
     id?: UuidFilter<"Attendance"> | string
+    teacherLatitude?: StringNullableFilter<"Attendance"> | string | null
+    teacherLongitude?: StringNullableFilter<"Attendance"> | string | null
+    teacherAltitude?: StringNullableFilter<"Attendance"> | string | null
     class_id?: UuidFilter<"Attendance"> | string
     subject_id?: UuidFilter<"Attendance"> | string
     teacher_id?: UuidFilter<"Attendance"> | string
@@ -13785,6 +13881,9 @@ export namespace Prisma {
 
   export type AttendanceCreateWithoutClassInput = {
     id?: string
+    teacherLatitude?: string | null
+    teacherLongitude?: string | null
+    teacherAltitude?: string | null
     date?: Date | string
     created_at?: Date | string
     session_start?: Date | string | null
@@ -13796,6 +13895,9 @@ export namespace Prisma {
 
   export type AttendanceUncheckedCreateWithoutClassInput = {
     id?: string
+    teacherLatitude?: string | null
+    teacherLongitude?: string | null
+    teacherAltitude?: string | null
     subject_id: string
     teacher_id: string
     date?: Date | string
@@ -13937,6 +14039,9 @@ export namespace Prisma {
 
   export type AttendanceCreateWithoutSubjectInput = {
     id?: string
+    teacherLatitude?: string | null
+    teacherLongitude?: string | null
+    teacherAltitude?: string | null
     date?: Date | string
     created_at?: Date | string
     session_start?: Date | string | null
@@ -13948,6 +14053,9 @@ export namespace Prisma {
 
   export type AttendanceUncheckedCreateWithoutSubjectInput = {
     id?: string
+    teacherLatitude?: string | null
+    teacherLongitude?: string | null
+    teacherAltitude?: string | null
     class_id: string
     teacher_id: string
     date?: Date | string
@@ -14438,6 +14546,9 @@ export namespace Prisma {
 
   export type AttendanceCreateManyTeacherInput = {
     id?: string
+    teacherLatitude?: string | null
+    teacherLongitude?: string | null
+    teacherAltitude?: string | null
     class_id: string
     subject_id: string
     date?: Date | string
@@ -14464,6 +14575,9 @@ export namespace Prisma {
 
   export type AttendanceUpdateWithoutTeacherInput = {
     id?: StringFieldUpdateOperationsInput | string
+    teacherLatitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherLongitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherAltitude?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14475,6 +14589,9 @@ export namespace Prisma {
 
   export type AttendanceUncheckedUpdateWithoutTeacherInput = {
     id?: StringFieldUpdateOperationsInput | string
+    teacherLatitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherLongitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherAltitude?: NullableStringFieldUpdateOperationsInput | string | null
     class_id?: StringFieldUpdateOperationsInput | string
     subject_id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14486,6 +14603,9 @@ export namespace Prisma {
 
   export type AttendanceUncheckedUpdateManyWithoutTeacherInput = {
     id?: StringFieldUpdateOperationsInput | string
+    teacherLatitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherLongitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherAltitude?: NullableStringFieldUpdateOperationsInput | string | null
     class_id?: StringFieldUpdateOperationsInput | string
     subject_id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14512,6 +14632,9 @@ export namespace Prisma {
 
   export type AttendanceCreateManyClassInput = {
     id?: string
+    teacherLatitude?: string | null
+    teacherLongitude?: string | null
+    teacherAltitude?: string | null
     subject_id: string
     teacher_id: string
     date?: Date | string
@@ -14568,6 +14691,9 @@ export namespace Prisma {
 
   export type AttendanceUpdateWithoutClassInput = {
     id?: StringFieldUpdateOperationsInput | string
+    teacherLatitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherLongitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherAltitude?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14579,6 +14705,9 @@ export namespace Prisma {
 
   export type AttendanceUncheckedUpdateWithoutClassInput = {
     id?: StringFieldUpdateOperationsInput | string
+    teacherLatitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherLongitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherAltitude?: NullableStringFieldUpdateOperationsInput | string | null
     subject_id?: StringFieldUpdateOperationsInput | string
     teacher_id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14590,6 +14719,9 @@ export namespace Prisma {
 
   export type AttendanceUncheckedUpdateManyWithoutClassInput = {
     id?: StringFieldUpdateOperationsInput | string
+    teacherLatitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherLongitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherAltitude?: NullableStringFieldUpdateOperationsInput | string | null
     subject_id?: StringFieldUpdateOperationsInput | string
     teacher_id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14610,6 +14742,9 @@ export namespace Prisma {
 
   export type AttendanceCreateManySubjectInput = {
     id?: string
+    teacherLatitude?: string | null
+    teacherLongitude?: string | null
+    teacherAltitude?: string | null
     class_id: string
     teacher_id: string
     date?: Date | string
@@ -14648,6 +14783,9 @@ export namespace Prisma {
 
   export type AttendanceUpdateWithoutSubjectInput = {
     id?: StringFieldUpdateOperationsInput | string
+    teacherLatitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherLongitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherAltitude?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     session_start?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14659,6 +14797,9 @@ export namespace Prisma {
 
   export type AttendanceUncheckedUpdateWithoutSubjectInput = {
     id?: StringFieldUpdateOperationsInput | string
+    teacherLatitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherLongitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherAltitude?: NullableStringFieldUpdateOperationsInput | string | null
     class_id?: StringFieldUpdateOperationsInput | string
     teacher_id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14670,6 +14811,9 @@ export namespace Prisma {
 
   export type AttendanceUncheckedUpdateManyWithoutSubjectInput = {
     id?: StringFieldUpdateOperationsInput | string
+    teacherLatitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherLongitude?: NullableStringFieldUpdateOperationsInput | string | null
+    teacherAltitude?: NullableStringFieldUpdateOperationsInput | string | null
     class_id?: StringFieldUpdateOperationsInput | string
     teacher_id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string

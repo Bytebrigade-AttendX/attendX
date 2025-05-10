@@ -175,6 +175,9 @@ exports.Prisma.TeacherClassScalarFieldEnum = {
 
 exports.Prisma.AttendanceScalarFieldEnum = {
   id: 'id',
+  teacherLatitude: 'teacherLatitude',
+  teacherLongitude: 'teacherLongitude',
+  teacherAltitude: 'teacherAltitude',
   class_id: 'class_id',
   subject_id: 'subject_id',
   teacher_id: 'teacher_id',
