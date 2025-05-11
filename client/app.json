@@ -1,4 +1,3 @@
-
 {
   "expo": {
     "name": "client",
@@ -9,26 +8,6 @@
     "scheme": "client",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-       "googleServices": {
-        "project_number": "249158865340"
-      },
-      
-      "edgeToEdgeEnabled": true,
-      "package": "com.kulj33t.client"
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
-    },
     "plugins": [
       "expo-router",
       [
@@ -41,13 +20,29 @@
         }
       ]
     ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.kulj33t.client",
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
     "experiments": {
       "typedRoutes": true
     },
-      "extra": {
+    "extra": {
       "router": {},
       "eas": {
-        "projectId": "da5b7df6-f3c8-483e-b787-e72f34dcc928"
+        "projectId": "e9a1904a-59c2-41b7-b859-96563794f1d0"
       },
       "apiUrl": "https://attendance-backend-fcu1.onrender.com"
     },

@@ -1,8 +1,5 @@
 import { useRouter } from "expo-router";
 import React, { useState , useEffect} from "react";
-import { StatusBar } from "expo-status-bar";
-import { registerForPushNotificationsAsync } from "../../utils/notification";
-import * as Notifications from "expo-notifications";
 import {
   SafeAreaView,
   ScrollView,
@@ -63,35 +60,6 @@ const subjects = [
 ];
 
 export default function HomeScreen() {
-
-
- //Injected code starts
-  useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => {
-      console.log(token);
-    });
-
-    const subscription = Notifications.addNotificationReceivedListener(
-      (notification) => {
-        console.log("Notification received!", notification);
-      }
-    );
-
-    const responseSub = Notifications.addNotificationResponseReceivedListener(
-      (response) => {
-        console.log("User interacted with notification", response);
-      }
-    );
-
-    return () => {
-      subscription.remove();
-      responseSub.remove();
-    };
-  }, []);
-  //Injected code ends 
-
-
-
 
   const router = useRouter();
   const [expandedId, setExpandedId] = useState(subjects[0].id);
