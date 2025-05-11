@@ -1,3 +1,4 @@
+
 {
   "expo": {
     "name": "client",
@@ -16,6 +17,10 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+       "googleServices": {
+        "project_number": "249158865340"
+      },
+      
       "edgeToEdgeEnabled": true,
       "package": "com.kulj33t.client"
     },
@@ -39,11 +44,12 @@
     "experiments": {
       "typedRoutes": true
     },
-    "extra": {
+      "extra": {
       "router": {},
       "eas": {
-        "projectId": "01abd025-d770-43ac-8b46-824a03ce1bc5"
-      }
+        "projectId": "da5b7df6-f3c8-483e-b787-e72f34dcc928"
+      },
+      "apiUrl": "https://attendance-backend-fcu1.onrender.com"
     },
     "owner": "kulj33t"
   }
