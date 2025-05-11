@@ -9,8 +9,8 @@ import {
   View,
 } from "react-native";
 import Svg, { Circle, G, Text as TextSvg } from "react-native-svg";
-import Icon from "@react-native-vector-icons/ionicons";
-
+import { Ionicons } from '@expo/vector-icons';
+import  Constants  from "expo-constants";
 import NotificationPanel from "../student-others/notification";
 
 const subjects = [
@@ -57,6 +57,7 @@ const subjects = [
 ];
 
 export default function HomeScreen() {
+  const API_BASE_URL=Constants.expoConfig?.extra?.apiUrl||""
   const [expandedId, setExpandedId] = useState(subjects[0].id);
   const [showNotification, setShowNotification] = useState(false);
   const router = useRouter();
@@ -69,7 +70,7 @@ export default function HomeScreen() {
         <View style={styles.headerRow}>
           <Text style={styles.header}>Hello, Kuljeet</Text>
           <TouchableOpacity onPress={() => setShowNotification(true)}>
-            <Icon name="notifications-outline" size={24} color="#000" />
+            <Ionicons name="notifications-outline" size={32} color="black" />
           </TouchableOpacity>
         </View>
 

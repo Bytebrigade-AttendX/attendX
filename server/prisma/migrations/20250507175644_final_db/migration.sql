@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "User" ALTER COLUMN "otp" DROP NOT NULL,
-ALTER COLUMN "otp_expiry" DROP NOT NULL;

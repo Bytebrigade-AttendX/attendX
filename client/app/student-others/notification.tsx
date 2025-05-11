@@ -11,16 +11,24 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
 
-export default function NotificationPanel({ visible, onClose }) {
+type NotificationPanelProps = {
+  visible: boolean;
+  onClose: () => void;
+};
+
+export default function NotificationPanel({ visible, onClose }: NotificationPanelProps) {
   const slideAnim = useRef(new Animated.Value(screenWidth)).current;
   const [renderModal, setRenderModal] = useState(visible);
 
-  // Simulated backend-style notification data
+  const [overlayVisible, setOverlayVisible] = useState(false);
+  const [overlayTitle, setOverlayTitle] = useState('');
+  const [overlayBody, setOverlayBody] = useState('');
+
   const notificationsByDate = [
     {
       date: 'Today',
@@ -36,34 +44,6 @@ export default function NotificationPanel({ visible, onClose }) {
         'Reminder: Project submission due today.',
         'You missed the attendance window for DSA.',
         'System maintenance completed successfully.',
-      ],
-    },
-    {
-      date: 'Monday, May 5',
-      items: [
-        'You have attended all classes.',
-        'Lab attendance marked for DBMS.',
-      ],
-    },
-    {
-      date: 'Sunday, May 4',
-      items: [
-        'OOPS class rescheduled to 2 PM.',
-        'Library book due reminder.',
-      ],
-    },
-    {
-      date: 'Saturday, May 3',
-      items: [
-        'Weekly performance summary uploaded.',
-        'New assignment posted for PSQ.',
-      ],
-    },
-    {
-      date: 'Friday, May 2',
-      items: [
-        'Holiday announced for Monday.',
-        'New grading policy updated.',
       ],
     },
   ];
@@ -87,6 +67,12 @@ export default function NotificationPanel({ visible, onClose }) {
     }
   }, [visible]);
 
+  const handleNotificationClick = (title: string, body: string) => {
+    setOverlayTitle(title);
+    setOverlayBody(body);
+    setOverlayVisible(true);
+  };
+
   if (!renderModal) return null;
 
   return (
@@ -95,14 +81,7 @@ export default function NotificationPanel({ visible, onClose }) {
         <Pressable style={styles.blurBackground} onPress={onClose} />
       </BlurView>
 
-      <Animated.View
-        style={[
-          styles.panel,
-          {
-            transform: [{ translateX: slideAnim }],
-          },
-        ]}
-      >
+      <Animated.View style={[styles.panel, { transform: [{ translateX: slideAnim }] }]}>
         <SafeAreaView style={styles.container}>
           <View style={styles.header}>
             <TouchableOpacity onPress={onClose}>
@@ -117,15 +96,33 @@ export default function NotificationPanel({ visible, onClose }) {
               <View key={date}>
                 <Text style={styles.sectionHeader}>{date}</Text>
                 {items.map((note, idx) => (
-                  <View key={`${date}-${idx}`} style={styles.notificationCard}>
+                  <TouchableOpacity
+                    key={`${date}-${idx}`}
+                    onPress={() => handleNotificationClick(date, note)}
+                    style={styles.notificationCard}
+                  >
                     <Text style={styles.notificationText}>{note}</Text>
-                  </View>
+                  </TouchableOpacity>
                 ))}
               </View>
             ))}
           </ScrollView>
         </SafeAreaView>
       </Animated.View>
+
+      <Modal transparent visible={overlayVisible} animationType="fade">
+        <BlurView intensity={20} tint="light" style={StyleSheet.absoluteFill} />
+        <View style={styles.overlayCard}>
+          <Text style={styles.overlayTitle}>{overlayTitle}</Text>
+          <Text style={styles.overlayBody}>{overlayBody}</Text>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setOverlayVisible(false)}
+          >
+            <Text style={styles.closeButtonText}>Mark as Present</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </Modal>
   );
 }
@@ -186,5 +183,45 @@ const styles = StyleSheet.create({
   notificationText: {
     fontSize: 14,
     color: '#333',
+  },
+  overlayCard: {
+    position: 'absolute',
+    top: '30%',
+    alignSelf: 'center',
+    width: '85%',
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 20,
+    elevation: 10,
+  },
+  backButton: {
+    marginBottom: 10,
+  },
+  backArrow: {
+    fontSize: 22,
+    fontWeight: '600',
+  },
+  overlayTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  overlayBody: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
+    color: '#444',
+  },
+  closeButton: {
+    backgroundColor: '#FF4D6D',
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
