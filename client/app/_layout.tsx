@@ -8,7 +8,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { ToastProvider} from "react-native-toast-notifications"
+import { ToastProvider } from "react-native-toast-notifications";
 export default function MainLayout() {
   const screenHeight = Dimensions.get("window").height;
 

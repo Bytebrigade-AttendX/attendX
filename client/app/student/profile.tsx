@@ -15,7 +15,7 @@ import { Toast } from "react-native-toast-notifications";
 
 export default function Profile() {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("token");

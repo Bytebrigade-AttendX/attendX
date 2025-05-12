@@ -42,9 +42,10 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "01abd025-d770-43ac-8b46-824a03ce1bc5"
-      }
+        "projectId": "b1841607-eac3-4367-a9bf-5b4cad7ff9b7"
+      },
+      "apiUrl": "https://attendance-backend-fcu1.onrender.com"
     },
-    "owner": "kulj33t"
+    "owner": "aadarsh_790"
   }
 }

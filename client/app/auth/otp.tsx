@@ -28,7 +28,18 @@ export default function OTP() {
     new Animated.Value(otp.length === 0 ? 0.95 : 1)
   ).current;
   const opacityAnim = useRef(new Animated.Value(0.7)).current;
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      const token = await AsyncStorage.getItem("token");
 
+      if (token) {
+        const role = await AsyncStorage.getItem("role");
+        if (role === "student") router.navigate("/student/home");
+        else router.navigate("/teacher/home");
+      } else return false;
+    };
+    checkLoggedIn();
+  }, []);
   useEffect(() => {
     Animated.parallel([
       Animated.timing(scaleAnim, {
