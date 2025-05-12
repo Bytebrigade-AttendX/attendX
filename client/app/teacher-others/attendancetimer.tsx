@@ -170,14 +170,16 @@ export default function AttendanceScreen() {
   };
   const handleSaveAttedance = async () => {
     try {
+      console.log("trying");
+
       const response = await axios.post(
         `${API_BASE_URL}/api/v1/attendance/storeRecords`,
         { attendanceRecords: record, attendanceId: attendanceId }
       );
-      console.log(response.data);
+      console.log(response);
       router.replace("/teacher/home");
     } catch (error: any) {
-      console.log(error.response.data);
+      console.log(error.response);
     }
   };
   useEffect(() => {

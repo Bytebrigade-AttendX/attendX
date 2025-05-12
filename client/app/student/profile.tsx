@@ -20,6 +20,7 @@ export default function Profile() {
     try {
       await AsyncStorage.removeItem("token");
       await AsyncStorage.removeItem("role");
+      await AsyncStorage.removeItem("notTokGen");
       router.navigate("/auth/login");
     } catch (error) {
       Toast.show("Something went wrong.", {
