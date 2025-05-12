@@ -109,7 +109,7 @@ export default function NotificationPanel({ visible, onClose }: NotificationPane
           </ScrollView>
         </SafeAreaView>
       </Animated.View>
-
+{/*
       <Modal transparent visible={overlayVisible} animationType="fade">
         <BlurView intensity={20} tint="light" style={StyleSheet.absoluteFill} />
         <View style={styles.overlayCard}>
@@ -123,6 +123,8 @@ export default function NotificationPanel({ visible, onClose }: NotificationPane
           </TouchableOpacity>
         </View>
       </Modal>
+
+*/}
     </Modal>
   );
 }

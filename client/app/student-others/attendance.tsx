@@ -4,8 +4,17 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 
+type MarkedDatesType = {
+  [date: string]: {
+    customStyles: {
+      container?: object;
+      text?: object;
+    };
+  };
+};
+
 const AttendanceScreen = () => {
-  const [attendanceData, setAttendanceData] = useState({});
+  const [attendanceData, setAttendanceData] = useState<MarkedDatesType>({});
   const router = useRouter();
 
   useEffect(() => {
@@ -22,7 +31,7 @@ const AttendanceScreen = () => {
       '2025-05-23': 'absent',
     };
 
-    const formatted = {};
+    const formatted: MarkedDatesType = {};
     for (const [date, status] of Object.entries(mockData)) {
       formatted[date] = {
         customStyles: {
@@ -43,7 +52,6 @@ const AttendanceScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.replace('/student/home')}>
           <Ionicons name="arrow-back" size={24} color="black" />
@@ -73,7 +81,6 @@ const AttendanceScreen = () => {
           />
         </View>
 
-        {/* Legend */}
         <View style={styles.legend}>
           <View style={styles.legendItem}>
             <View style={[styles.dot, { backgroundColor: '#56C1AE' }]} />

@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -7,12 +7,15 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Platform,
+  PermissionsAndroid,
 } from "react-native";
 import Svg, { Circle, G, Text as TextSvg } from "react-native-svg";
-import { Ionicons } from '@expo/vector-icons';
-import  Constants  from "expo-constants";
+import { Ionicons } from "@expo/vector-icons";
+import Constants from "expo-constants";
 import NotificationPanel from "../student-others/notification";
 
+// Dummy data
 const subjects = [
   {
     id: 1,
@@ -57,10 +60,10 @@ const subjects = [
 ];
 
 export default function HomeScreen() {
-  const API_BASE_URL=Constants.expoConfig?.extra?.apiUrl||""
+
+  const router = useRouter();
   const [expandedId, setExpandedId] = useState(subjects[0].id);
   const [showNotification, setShowNotification] = useState(false);
-  const router = useRouter();
 
   const toggleExpand = (id: number) => setExpandedId(id);
 
@@ -85,7 +88,6 @@ export default function HomeScreen() {
         ))}
       </ScrollView>
 
-      {/* Render the Notification Panel */}
       <NotificationPanel
         visible={showNotification}
         onClose={() => setShowNotification(false)}
@@ -94,7 +96,28 @@ export default function HomeScreen() {
   );
 }
 
-function SubjectTile({ subject, expanded, onPress, onViewDetails }: any) {
+type Subject = {
+  id: number;
+  name: string;
+  subcode: string;
+  professor: string;
+  total: number;
+  present: number;
+};
+
+type SubjectTileProps = {
+  subject: Subject;
+  expanded: boolean;
+  onPress: () => void;
+  onViewDetails: () => void;
+};
+
+function SubjectTile({
+  subject,
+  expanded,
+  onPress,
+  onViewDetails,
+}: SubjectTileProps) {
   const { name, subcode, professor, total, present } = subject;
   const absent = total - present;
   const percentage = Math.round((present / total) * 100);
@@ -106,11 +129,7 @@ function SubjectTile({ subject, expanded, onPress, onViewDetails }: any) {
   const strokeWidth = 20;
 
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      activeOpacity={0.9}
-      style={styles.tileWrapper}
-    >
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={styles.tileWrapper}>
       <View style={[styles.tile, expanded && styles.tileExpanded]}>
         <View style={styles.tileHeader}>
           <View style={styles.leftSection}>
@@ -119,10 +138,7 @@ function SubjectTile({ subject, expanded, onPress, onViewDetails }: any) {
             <Text style={styles.subDetails}>{professor}</Text>
 
             {expanded && (
-              <TouchableOpacity
-                style={styles.viewButton}
-                onPress={onViewDetails}
-              >
+              <TouchableOpacity style={styles.viewButton} onPress={onViewDetails}>
                 <Text style={styles.buttonText}>View Details</Text>
               </TouchableOpacity>
             )}
@@ -152,7 +168,7 @@ function SubjectTile({ subject, expanded, onPress, onViewDetails }: any) {
                 />
               </G>
               <TextSvg
-                x="43"
+                x="50"
                 y="55"
                 fontSize={expanded ? "20" : "16"}
                 fill="#000"
