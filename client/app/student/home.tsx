@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -7,20 +7,18 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Platform,
-  PermissionsAndroid,
 } from "react-native";
 import Svg, { Circle, G, Text as TextSvg } from "react-native-svg";
 import { Ionicons } from "@expo/vector-icons";
 import * as Notifications from "expo-notifications";
-
-import Constants from "expo-constants";
 import NotificationPanel from "../student-others/notification";
 import {
   registerForPushNotifications,
   saveTokenToBackend,
 } from "../../utils/notifications.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import Constants from "expo-constants";
 // Dummy data
 const subjects = [
   {
@@ -66,6 +64,76 @@ const subjects = [
 ];
 
 export default function HomeScreen() {
+  useEffect(() => {
+    const fetchActiveSession = async () => {
+      try {
+        const token = await AsyncStorage.getItem("token");
+        if (!token) {
+          console.log("No authentication token found");
+          return;
+        }
+
+        const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
+        console.log(
+          "Fetching active session from:",
+          `${API_BASE_URL}/api/v1/attendance/getActiveAttendance`
+        );
+
+        const response = await axios.post(
+          `${API_BASE_URL}/api/v1/attendance/getActiveAttendance`,
+          { token }
+        );
+
+        // Log the entire response object to see what's coming back
+        console.log("Active session API response:", response);
+
+        // Now specifically log the data part
+        console.log("Active session data:", response.data);
+
+        if (
+          response.data &&
+          response.data.statusCode === 200 &&
+          response.data.data
+        ) {
+          console.log(
+            "Valid active session found, navigating to confirmation page"
+          );
+          router.navigate({
+            pathname: "/student-others/confirm",
+            params: {
+              branch: response.data.data.branch,
+              semester: response.data.data.semester,
+              subject: response.data.data.subjectName,
+              attendanceId: response.data.data.attendanceId,
+            },
+          });
+        } else {
+          console.log(
+            "No active attendance session or invalid response format"
+          );
+        }
+      } catch (error: any) {
+        console.error("Error fetching active attendance:", error);
+        // More detailed error logging
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.error("Error response data:", error.response.data);
+          console.error("Error response status:", error.response.status);
+          console.error("Error response headers:", error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error("Error request:", error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error("Error message:", error.message);
+        }
+      }
+    };
+
+    fetchActiveSession();
+  }, [router]);
+
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>("");
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
@@ -79,7 +147,6 @@ export default function HomeScreen() {
       const token = await registerForPushNotifications();
       setExpoPushToken(token);
       const userToken = await AsyncStorage.getItem("token");
-      // Here you would typically send this token to your backend
       if (token) {
         console.log("Push notification token generated:", token);
         const response = await saveTokenToBackend(token, userToken);
@@ -87,16 +154,12 @@ export default function HomeScreen() {
         if (response.statusCode === 200) {
           await AsyncStorage.setItem("notTokGen", "true");
         }
-        // Call your API to save the token
-        // saveTokenToBackend(token);
       }
     } catch (error) {
       console.error("Error registering for push notifications:", error);
     }
   };
-
   getNotificationToken();
-
   // Set up notification listeners
   notificationListener.current = Notifications.addNotificationReceivedListener(
     (notification) => {
@@ -104,7 +167,6 @@ export default function HomeScreen() {
       // Handle received notification
     }
   );
-
   responseListener.current =
     Notifications.addNotificationResponseReceivedListener((response) => {
       console.log("Notification tapped:", response);
