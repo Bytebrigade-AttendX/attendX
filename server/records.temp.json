@@ -1,0 +1,44 @@
+[
+  {
+    "attendanceId": "d8235574-ea14-48da-904d-0e278f3cde8d",
+    "teacherLatitude": "112.34",
+    "teacherLongitude": "123.11",
+    "teacherId": "8c2358b4-36a1-4c37-a8e4-cb98c4ff4c02",
+    "studentRecords": {
+      "bfb46ff6-9037-4c0a-8ecb-d1ba6f63d507": {
+        "status": "absent"
+      },
+      "a32558ba-dd75-43f3-9423-1170b4adf507": {
+        "status": "absent"
+      }
+    }
+  },
+  {
+    "attendanceId": "0001f0c6-5bbf-474e-80ae-ab1a54aa22d4",
+    "teacherLatitude": "112.34",
+    "teacherLongitude": "123.11",
+    "teacherId": "8c2358b4-36a1-4c37-a8e4-cb98c4ff4c02",
+    "studentRecords": {
+      "bfb46ff6-9037-4c0a-8ecb-d1ba6f63d507": {
+        "status": "absent"
+      },
+      "a32558ba-dd75-43f3-9423-1170b4adf507": {
+        "status": "absent"
+      }
+    }
+  },
+  {
+    "attendanceId": "0afe029a-f0ff-44db-9497-0019f95f6ff3",
+    "teacherLatitude": "112.34",
+    "teacherLongitude": "123.11",
+    "teacherId": "8c2358b4-36a1-4c37-a8e4-cb98c4ff4c02",
+    "studentRecords": {
+      "bfb46ff6-9037-4c0a-8ecb-d1ba6f63d507": {
+        "status": "absent"
+      },
+      "a32558ba-dd75-43f3-9423-1170b4adf507": {
+        "status": "absent"
+      }
+    }
+  }
+]
