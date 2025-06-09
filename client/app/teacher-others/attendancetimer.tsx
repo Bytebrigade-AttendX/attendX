@@ -42,12 +42,11 @@ export default function AttendanceScreen() {
   const [markedPresent, setMarkedPresent] = useState(17);
   const totalStudents = 86;
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
-  const { branch, semester, subject } = useLocalSearchParams();
 
   const [record, setRecord] = useState<student[]>([]);
   const [attendanceId, setAttendanceId] = useState("");
   const animatedValue = useRef(new Animated.Value(0)).current;
-
+  const { branch, semester, subject } = useLocalSearchParams();
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
@@ -132,6 +131,7 @@ export default function AttendanceScreen() {
       });
 
       setAttendanceState("inProgress");
+      setAttendanceId(response.data.data.attendanceId);
       setTimer(180);
       animatedValue.setValue(0);
     } catch (error: any) {
@@ -155,6 +155,7 @@ export default function AttendanceScreen() {
         `${API_BASE_URL}/api/v1/attendance/endSession`,
         {
           token,
+          attendanceId,
         }
       );
       setAttendanceState("completed");
@@ -255,9 +256,9 @@ export default function AttendanceScreen() {
       <View style={{ height: 20 }} />
       {(attendanceState === "idle" || attendanceState === "inProgress") && (
         <>
-          <Text style={styles.info}>Branch : CSE</Text>
-          <Text style={styles.info}>Sem: III</Text>
-          <Text style={styles.info}>Subject: OOPS</Text>
+          <Text style={styles.info}>Branch : {branch}</Text>
+          <Text style={styles.info}>Sem: {semester}</Text>
+          <Text style={styles.info}>Subject: {subject}</Text>
         </>
       )}
       ` `
