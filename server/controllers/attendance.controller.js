@@ -281,6 +281,15 @@ const startSession = async (req, res) => {
       studentRecords: studentRecords,
     });
 
+    const data = { attendanceId: attendance.id };
+
+    sendPushNotification(
+      fcmTokens,
+      "Kindly Mark your attendance",
+      "Click this notification to mark your attendance",
+      data
+    );
+
     await client.set(
       `attendance_session:${attendance.id}`,
       JSON.stringify(records)
