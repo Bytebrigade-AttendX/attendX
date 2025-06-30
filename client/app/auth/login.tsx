@@ -16,7 +16,9 @@ import {
 import axios from "axios";
 import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useLoading } from "@/context/LoadingContext";
 export default function LoginScreen() {
+  const { setLoading } = useLoading();
   const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
   const viewAllKeysAndValues = async () => {
     try {
@@ -74,6 +76,7 @@ export default function LoginScreen() {
   }, []);
 
   const handleContinue = async () => {
+    setLoading(true);
     if (isValidEmail) {
       try {
         const response = await axios.post(
@@ -86,8 +89,10 @@ export default function LoginScreen() {
             pathname: "/auth/otp",
             params: { email },
           });
+          setLoading(false);
         }
       } catch (error: any) {
+        setLoading(false);
         Toast.show(error.response.data.message, {
           type: "danger",
           placement: "top",

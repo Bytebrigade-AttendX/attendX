@@ -1,3 +1,5 @@
+import GlobalLoader from "@/components/GlobalLoader";
+import { LoadingProvider } from "@/context/LoadingContext";
 import { Slot } from "expo-router";
 import React from "react";
 import {
@@ -25,7 +27,10 @@ export default function MainLayout() {
           behavior={Platform.OS === "ios" ? "padding" : undefined}
         >
           <View style={[styles.content, { maxHeight: screenHeight }]}>
-            <Slot />
+            <LoadingProvider>
+              <Slot />
+              <GlobalLoader />
+            </LoadingProvider>
           </View>
         </KeyboardAvoidingView>
       </View>

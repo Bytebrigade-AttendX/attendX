@@ -17,7 +17,9 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Toast } from "react-native-toast-notifications";
+import { useLoading } from "@/context/LoadingContext";
 export default function OTP() {
+  const { setLoading } = useLoading();
   const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
   const [otp, setOtp] = useState("");
   const inputRef = useRef<TextInput>(null);
@@ -61,6 +63,7 @@ export default function OTP() {
   };
 
   const handleVerify = async () => {
+    setLoading(true);
     try {
       const response = await axios.post(
         `${API_BASE_URL}/api/v1/user/loginOtpVerify`,
@@ -72,8 +75,10 @@ export default function OTP() {
         if (response.data.data.role === "student")
           router.navigate("/student/home");
         else router.navigate("/teacher/home");
+        setLoading(false);
       }
     } catch (error: any) {
+      setLoading(false);
       if (error.response.status === 400) {
         triggerShake();
         Vibration.vibrate(100);

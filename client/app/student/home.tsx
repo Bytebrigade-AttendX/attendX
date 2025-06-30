@@ -1,5 +1,5 @@
-import { useRouter } from "expo-router";
-import React, { useState, useRef, useEffect } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -19,6 +19,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import Constants from "expo-constants";
+import { useLoading } from "@/context/LoadingContext";
 // Dummy data
 const subjects = [
   {
@@ -64,80 +65,57 @@ const subjects = [
 ];
 
 export default function HomeScreen() {
-  useEffect(() => {
-    const fetchActiveSession = async () => {
-      try {
-        const token = await AsyncStorage.getItem("token");
-        if (!token) {
-          console.log("No authentication token found");
-          return;
-        }
+  const router = useRouter();
+  const { setLoading } = useLoading();
+  useFocusEffect(
+    useCallback(() => {
+      const fetchActiveSession = async () => {
+        setLoading(true);
 
-        const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
-        console.log(
-          "Fetching active session from:",
-          `${API_BASE_URL}/api/v1/attendance/getActiveAttendance`
-        );
+        try {
+          const token = await AsyncStorage.getItem("token");
+          if (!token) {
+            console.log("No authentication token found");
+            return;
+          }
 
-        const response = await axios.post(
-          `${API_BASE_URL}/api/v1/attendance/getActiveAttendance`,
-          { token }
-        );
-
-        // Log the entire response object to see what's coming back
-        console.log("Active session API response:", response);
-
-        // Now specifically log the data part
-        console.log("Active session data:", response.data);
-
-        if (
-          response.data &&
-          response.data.statusCode === 200 &&
-          response.data.data
-        ) {
-          console.log(
-            "Valid active session found, navigating to confirmation page"
+          const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
+          const response = await axios.post(
+            `${API_BASE_URL}/api/v1/attendance/getActiveAttendance`,
+            { token }
           );
-          router.navigate({
-            pathname: "/student-others/confirm",
-            params: {
-              branch: response.data.data.branch,
-              semester: response.data.data.semester,
-              subject: response.data.data.subjectName,
-              attendanceId: response.data.data.attendanceId,
-            },
-          });
-        } else {
-          console.log(
-            "No active attendance session or invalid response format"
-          );
-        }
-      } catch (error: any) {
-        console.error("Error fetching active attendance:", error);
-        // More detailed error logging
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.error("Error response data:", error.response.data);
-          console.error("Error response status:", error.response.status);
-          console.error("Error response headers:", error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.error("Error request:", error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.error("Error message:", error.message);
-        }
-      }
-    };
 
-    fetchActiveSession();
-  }, [router]);
+          if (
+            response.data &&
+            response.data.statusCode === 200 &&
+            response.data.data
+          ) {
+            router.navigate({
+              pathname: "/student-others/confirm",
+              params: {
+                branch: response.data.data.branch,
+                semester: response.data.data.semester,
+                subject: response.data.data.subjectName,
+                attendanceId: response.data.data.attendanceId,
+              },
+            });
+          } else {
+            console.log("No active attendance session");
+          }
+        } catch (error: any) {
+          console.error("Error fetching active attendance:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchActiveSession();
+    }, [router])
+  );
 
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>("");
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
-  const router = useRouter();
   const [expandedId, setExpandedId] = useState(subjects[0].id);
   const [showNotification, setShowNotification] = useState(false);
   const getNotificationToken = async () => {
