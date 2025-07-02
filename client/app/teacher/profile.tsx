@@ -1,6 +1,6 @@
 import { Feather, Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -11,12 +11,25 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Constants from "expo-constants";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Toast } from "react-native-toast-notifications";
+import { useLoading } from "@/context/LoadingContext";
+import axios from "axios";
 export default function Profile() {
+  const { setLoading } = useLoading();
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({
+    name: "Mr. Sachin Kumar",
+    designation: "Assistant Professor",
+    department: "Computer Science and Engineering",
+    employeeId: "TCH202531",
+    phone: "+91 98765 12345",
+    email: "amandeep.kaur@university.edu",
+    address: "Block A, Faculty Quarters, Campus, India",
+    avatar: "https://via.placeholder.com/80",
+  });
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("token");
@@ -29,19 +42,40 @@ export default function Profile() {
       });
     }
   };
-  useEffect(() => {
-    setUser({
-      name: "Mr. Sachin Kumar",
-      designation: "Assistant Professor",
-      department: "Computer Science and Engineering",
-      employeeId: "TCH202531",
-      phone: "+91 98765 12345",
-      email: "amandeep.kaur@university.edu",
-      address: "Block A, Faculty Quarters, Campus, India",
-      avatar: "https://via.placeholder.com/80",
-    });
-  }, []);
-
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true);
+      const profile = async () => {
+        try {
+          console.log("tryi");
+          const token = await AsyncStorage.getItem("token");
+          const role = await AsyncStorage.getItem("role");
+          const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
+          const response = await axios.post(
+            `${API_BASE_URL}/api/v1/user/me/${token}`,
+            { role }
+          );
+          setUser({
+            name: response.data.data.name || "DEFAULT",
+            designation: response.data.data.designation || "DEFAULT",
+            department: response.data.data.department || "DEFAULT",
+            employeeId: response.data.data.teacher_id_no || "DEFAULT",
+            phone: response.data.data.phone || "DEFAULT",
+            email: response.data.data.email || "DEFAULT",
+            address: response.data.data.address || "DEFAULT",
+            avatar:
+              response.data.data.avatar || "https://via.placeholder.com/80",
+          });
+          console.log(JSON.stringify(response.data, null, 2));
+        } catch (error) {
+          console.log(JSON.stringify(error));
+        } finally {
+          setLoading(false);
+        }
+      };
+      profile();
+    }, [])
+  );
   if (!user) {
     return (
       <SafeAreaView style={styles.container}>

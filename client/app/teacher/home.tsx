@@ -1,5 +1,5 @@
-import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
   SafeAreaView,
@@ -12,7 +12,9 @@ import {
 import AttendanceOverlay from "../teacher-others/attendanceoverlay";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { useLoading } from "@/context/LoadingContext";
+import Constants from "expo-constants";
+import { useTeacher } from "@/context/TeacherContext";
 const dummyData = [
   {
     semester: "Sem I",
@@ -57,42 +59,49 @@ const dummyData = [
 ];
 
 export default function TeacherHomeScreen() {
+  const { setSubjectsBySemester, subjectsBySemester } = useTeacher(); // use context
+  const { setLoading } = useLoading();
   const router = useRouter();
-  const [expandedSemester, setExpandedSemester] = useState(
-    dummyData.length > 0 ? dummyData[0].semester : ""
-  );
-  const [subjectsBySemester, setSubjectsBySemester] = useState([]);
+  const [expandedSemester, setExpandedSemester] = useState("");
   const [showOverlay, setShowOverlay] = useState(false);
-  const [user, setUser] = useState();
   useEffect(() => {
-    setSubjectsBySemester(dummyData);
-  }, []);
+    // Set default expanded semester on data update
+    if (subjectsBySemester.length > 0) {
+      setExpandedSemester(subjectsBySemester[0].semester);
+    }
+  }, [subjectsBySemester]);
 
-  const toggleSemester = (semester) => {
+  const toggleSemester = (semester: any) => {
     setExpandedSemester(semester);
   };
-  useEffect(() => {
-    const loadHome = async () => {
-      console.log("hi");
-      try {
-        const token = await AsyncStorage.getItem("token");
-        const response = await axios.post(
-          "https://f04f-2405-201-a43a-10b4-75e6-5a29-c907-1a4.ngrok-free.app/api/v1/home/getUser",
-          { token }
-        );
-        setUser(response.data.data.user);
-        console.log(response.data);
-      } catch (error) {}
-    };
-    loadHome();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true);
+      const Home = async () => {
+        try {
+          const token = await AsyncStorage.getItem("token");
+          const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
+          const response = await axios.get(
+            `${API_BASE_URL}/api/v1/teacher/getSubjects/${token}`
+          );
+          setSubjectsBySemester(response.data.data);
+          console.log("res", JSON.stringify(response.data.data, null, 2));
+        } catch (error: any) {
+          console.log(error.response);
+        } finally {
+          setLoading(false);
+        }
+      };
+      Home();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Top Half */}
       <View style={styles.topSection}>
         <View style={styles.header}>
-          <Text style={styles.greeting}>Hello, {user?.name || "Teacher"}</Text>
+          <Text style={styles.greeting}>Hello, {"Teacher"}</Text>
         </View>
 
         <View style={styles.centerButtonWrapper}>
@@ -123,7 +132,7 @@ export default function TeacherHomeScreen() {
               </View>
               {expandedSemester === item.semester && (
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  {item.subjects.map((subject, idx) => (
+                  {item.subjects.map((subject: any, idx: any) => (
                     <View key={idx} style={styles.subjectCard}>
                       <Text style={styles.subjectName}>{subject.name}</Text>
                       <Text style={styles.subjectDetails}>

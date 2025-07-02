@@ -17,6 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useLocalSearchParams } from "expo-router";
 import { Toast } from "react-native-toast-notifications";
+import { useLoading } from "@/context/LoadingContext";
 
 type AttendanceState = "idle" | "inProgress" | "completed";
 interface student {
@@ -34,6 +35,7 @@ const dummyStudents = Array(5).fill({
 });
 
 export default function AttendanceScreen() {
+  const { setLoading } = useLoading();
   const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
   const router = useRouter();
   const [attendanceState, setAttendanceState] =
@@ -104,13 +106,14 @@ export default function AttendanceScreen() {
   );
 
   const handleStartAttendance = async () => {
+    setLoading(true);
     try {
       const { coords } = await Location.getCurrentPositionAsync({});
       const token = await AsyncStorage.getItem("token");
-      Toast.show("Starting attendance session...", {
-        type: "info",
-        placement: "top",
-      });
+      // Toast.show("Starting attendance session", {
+      //   type: "info",
+      //   placement: "top",
+      // });
 
       const response = await axios.post(
         `${API_BASE_URL}/api/v1/attendance/startSession`,
@@ -136,7 +139,6 @@ export default function AttendanceScreen() {
       animatedValue.setValue(0);
     } catch (error: any) {
       console.log(error.response);
-      console.log("err");
       Toast.show(
         "Failed to start attendance: " +
           (error.response?.data?.message || error.message),
@@ -146,9 +148,12 @@ export default function AttendanceScreen() {
           duration: 4000,
         }
       );
+    } finally {
+      setLoading(false);
     }
   };
   const handleStopAttendance = async () => {
+    setLoading(true);
     try {
       const token = await AsyncStorage.getItem("token");
       const response = await axios.post(
@@ -166,21 +171,46 @@ export default function AttendanceScreen() {
         JSON.stringify(response?.data, null, 2)
       );
     } catch (error: any) {
-      console.log(error.response.data);
+      Toast.show(
+        "Failed to stop attendance: " +
+          (error.response?.data?.message || error.message),
+        {
+          type: "danger",
+          placement: "top",
+          duration: 4000,
+        }
+      );
+    } finally {
+      setLoading(false);
     }
   };
   const handleSaveAttedance = async () => {
+    setLoading(true);
     try {
-      console.log("trying");
-
       const response = await axios.post(
         `${API_BASE_URL}/api/v1/attendance/storeRecords`,
         { attendanceRecords: record, attendanceId: attendanceId }
       );
-      console.log(response);
+      console.log(response.data.statusCode);
+      if (response.data.statusCode) {
+        Toast.show("Record saved successfully!", {
+          type: "success",
+          placement: "top",
+        });
+      }
       router.replace("/teacher/home");
     } catch (error: any) {
-      console.log(error.response);
+      Toast.show(
+        "Failed to save records: " +
+          (error.response?.data?.message || error.message),
+        {
+          type: "danger",
+          placement: "top",
+          duration: 4000,
+        }
+      );
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BlurView } from "expo-blur";
 import { useRouter } from "expo-router";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import {
   Animated,
   Modal,
@@ -15,10 +15,12 @@ import {
 import DropDownPicker from "react-native-dropdown-picker";
 import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useTeacher } from "@/context/TeacherContext";
 export default function AttendanceOverlay({ visible, onClose }) {
   const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
   const router = useRouter();
 
+  const { subjectsBySemester } = useTeacher();
   const [branchOpen, setBranchOpen] = useState(false);
   const [semesterOpen, setSemesterOpen] = useState(false);
   const [subjectOpen, setSubjectOpen] = useState(false);
@@ -27,22 +29,66 @@ export default function AttendanceOverlay({ visible, onClose }) {
   const [semester, setSemester] = useState(null);
   const [subject, setSubject] = useState(null);
 
-  const [branchItems] = useState([
+  const [branchItems, setBranchItems] = useState([
     { label: "CSE", value: "CSE" },
     { label: "IT", value: "IT" },
     { label: "ECE", value: "ECE" },
   ]);
-  const [semesterItems] = useState([
+  const [semesterItems, setSemesterItems] = useState([
     { label: "Sem I", value: "I" },
     { label: "Sem III", value: "III" },
     { label: "Sem V", value: "V" },
     { label: "Sem VII", value: "VII" },
   ]);
-  const [subjectItems] = useState([
+  const [subjectItems, setSubjectItems] = useState([
     { label: "DSA", value: "CS201" },
     { label: "EMaths", value: "MA101" },
     { label: "DBMS", value: "DBMS" },
   ]);
+
+  const availableBranches = Array.from(
+    new Set(
+      subjectsBySemester?.flatMap((semObj: any) =>
+        semObj.subjects.map((s: any) => s.branch)
+      )
+    )
+  );
+
+  const filteredSemesters =
+    subjectsBySemester
+      ?.filter((semObj: any) =>
+        semObj.subjects.some((s: any) => s.branch === branch)
+      )
+      .map((semObj: any) => ({
+        label: semObj.semester,
+        value: semObj.semester.split(" ")[1],
+      })) || [];
+
+  const filteredSubjects =
+    subjectsBySemester
+      ?.find((semObj: any) => semObj.semester.split(" ")[1] === semester)
+      ?.subjects.filter((s: any) => s.branch === branch)
+      .map((s: any) => ({
+        label: s.name,
+        value: s.name,
+      })) || [];
+
+  useEffect(() => {
+    setBranchItems(availableBranches.map((b) => ({ label: b, value: b })));
+  }, [subjectsBySemester]);
+
+  useEffect(() => {
+    if (branch) setSemesterItems(filteredSemesters);
+    else setSemesterItems([]);
+    setSemester(null);
+    setSubject(null);
+  }, [branch]);
+
+  useEffect(() => {
+    if (branch && semester) setSubjectItems(filteredSubjects);
+    else setSubjectItems([]);
+    setSubject(null);
+  }, [semester, branch]);
 
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
@@ -81,12 +127,14 @@ export default function AttendanceOverlay({ visible, onClose }) {
 
   const handleStart = async () => {
     if (allSelected) {
+      const selectedSubject =
+        filteredSubjects.find((s: any) => s.value === subject)?.label || "";
       router.navigate({
         pathname: "/teacher-others/attendancetimer",
         params: {
           branch,
           semester,
-          subject,
+          subject: selectedSubject,
         },
       });
     } else {

@@ -1,8 +1,8 @@
 import { Feather, Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   SafeAreaView,
   ScrollView,
@@ -11,16 +11,29 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Toast } from "react-native-toast-notifications";
+import Constants from "expo-constants";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Toast } from "react-native-toast-notifications";
+import { useLoading } from "@/context/LoadingContext";
+import axios from "axios";
 export default function Profile() {
+  const { setLoading } = useLoading();
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState({
+    name: "Mr. Sachin Kumar",
+    designation: "Assistant Professor",
+    department: "Computer Science and Engineering",
+    regNo: "TCH202531",
+    phone: "+91 98765 12345",
+    email: "amandeep.kaur@university.edu",
+    address: "Block A, Faculty Quarters, Campus, India",
+    avatar: "https://via.placeholder.com/80",
+  });
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("token");
       await AsyncStorage.removeItem("role");
-      await AsyncStorage.removeItem("notTokGen");
       router.navigate("/auth/login");
     } catch (error) {
       Toast.show("Something went wrong.", {
@@ -29,26 +42,57 @@ export default function Profile() {
       });
     }
   };
-
-  useEffect(() => {
-    setUser({
-      name: "Kuljeet Singh",
-      branch: "Information Technology",
-      regNo: "123456789012345",
-      phone: "+91 98765 43210",
-      email: "kuljeet@email.com",
-      address: "42B, Sector 12, Mumbai, India",
-      avatar: "https://via.placeholder.com/80",
-    });
-  }, []);
-
-  if (!user) return null;
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true);
+      const profile = async () => {
+        try {
+          console.log("tryi");
+          const token = await AsyncStorage.getItem("token");
+          const role = await AsyncStorage.getItem("role");
+          const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
+          const response = await axios.post(
+            `${API_BASE_URL}/api/v1/user/me/${token}`,
+            { role }
+          );
+          setUser({
+            name: response.data.data.name || "DEFAULT",
+            designation: response.data.data.designation || "DEFAULT",
+            department: response.data.data.department || "DEFAULT",
+            regNo: response.data.data.regNo || "DEFAULT",
+            phone: response.data.data.phone || "DEFAULT",
+            email: response.data.data.email || "DEFAULT",
+            address: response.data.data.address || "DEFAULT",
+            avatar:
+              response.data.data.avatar || "https://via.placeholder.com/80",
+          });
+          console.log(JSON.stringify(response.data, null, 2));
+        } catch (error) {
+          console.log(JSON.stringify(error));
+        } finally {
+          setLoading(false);
+        }
+      };
+      profile();
+    }, [])
+  );
+  if (!user) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ActivityIndicator
+          size="large"
+          color="#000"
+          style={{ marginTop: 100 }}
+        />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.replace("/student/home")}>
+        <TouchableOpacity onPress={() => router.replace("/teacher/home")}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Profile</Text>
@@ -65,12 +109,13 @@ export default function Profile() {
           <Image source={{ uri: user.avatar }} style={styles.avatar} />
           <View style={{ marginLeft: 16 }}>
             <Text style={styles.name}>{user.name}</Text>
-            <Text style={styles.subTitle}>{user.branch}</Text>
+            <Text style={styles.subTitle}>{user.designation}</Text>
           </View>
         </View>
 
         <View style={styles.infoCard}>
-          <Text style={styles.infoText}>Reg No: {user.regNo}</Text>
+          <Text style={styles.infoText}>Reg. No.: {user.regNo}</Text>
+          <Text style={styles.infoText}>Department: {user.department}</Text>
           <Text style={styles.infoText}>Phone: {user.phone}</Text>
           <Text style={styles.infoText}>Email: {user.email}</Text>
           <Text style={styles.infoText}>Address: {user.address}</Text>
@@ -84,9 +129,9 @@ export default function Profile() {
             style={{ marginRight: 10 }}
           />
           <View>
-            <Text style={styles.contactTitle}>Contact Us</Text>
+            <Text style={styles.contactTitle}>Contact Support</Text>
             <Text style={styles.contactSub}>
-              Reach out to Admin for assistance.
+              Reach out to admin for technical help.
             </Text>
           </View>
         </TouchableOpacity>
@@ -100,7 +145,7 @@ export default function Profile() {
           />
           <View>
             <Text style={styles.logoutText}>Log Out</Text>
-            <Text style={styles.logoutSub}>Log out from your account</Text>
+            <Text style={styles.logoutSub}>Exit your account securely</Text>
           </View>
         </TouchableOpacity>
       </ScrollView>
