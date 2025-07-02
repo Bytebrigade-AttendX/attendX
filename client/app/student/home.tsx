@@ -21,7 +21,7 @@ import axios from "axios";
 import Constants from "expo-constants";
 import { useLoading } from "@/context/LoadingContext";
 // Dummy data
-const subjects = [
+const dummySubjects = [
   {
     id: 1,
     name: "DBMS",
@@ -67,6 +67,8 @@ const subjects = [
 export default function HomeScreen() {
   const router = useRouter();
   const { setLoading } = useLoading();
+  const [subjects, setSubjects] = useState(dummySubjects);
+  //getting active attendance session details
   useFocusEffect(
     useCallback(() => {
       const fetchActiveSession = async () => {
@@ -112,7 +114,28 @@ export default function HomeScreen() {
       fetchActiveSession();
     }, [router])
   );
-
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true);
+      const Home = async () => {
+        try {
+          const token = await AsyncStorage.getItem("token");
+          const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
+          const response = await axios.get(
+            `${API_BASE_URL}/api/v1/student/getSubjects/${token}`
+          );
+          // setSubjectsBySemester(response.data.data);
+          setSubjects(response.data.data);
+          console.log("res", JSON.stringify(response.data, null, 2));
+        } catch (error: any) {
+          console.log(error.response);
+        } finally {
+          setLoading(false);
+        }
+      };
+      Home();
+    }, [])
+  );
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>("");
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
@@ -206,11 +229,11 @@ function SubjectTile({
 }: SubjectTileProps) {
   const { name, subcode, professor, total, present } = subject;
   const absent = total - present;
-  const percentage = Math.round((present / total) * 100);
+  const percentage = total === 0 ? 100 : Math.round((present / total) * 100);
 
   const radius = 40;
   const circumference = 2 * Math.PI * radius;
-  const dashArray = (absent / total) * circumference;
+  const dashArray = (1 - absent / total) * circumference;
   const chartSize = expanded ? 100 : 60;
   const strokeWidth = 20;
 
