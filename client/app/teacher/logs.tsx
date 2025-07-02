@@ -1,183 +1,213 @@
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import dayjs from 'dayjs';
-import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
+import { useLoading } from "@/context/LoadingContext";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import axios from "axios";
+import dayjs from "dayjs";
+import { useFocusEffect, useRouter } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import Constants from "expo-constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+const mockData = [
+  {
+    subject: "DBMS",
+    branch: "CSE",
+    semester: "6",
+    total: 60,
+    present: 52,
+    absent: 8,
+    time: "09:00:00",
+    date: "2025-05-08",
+  },
+  {
+    subject: "OOPS",
+    branch: "ECE",
+    semester: "4",
+    total: 55,
+    present: 50,
+    absent: 5,
+    time: "10:30:00",
+    date: "2025-05-08",
+  },
+  {
+    subject: "DSA",
+    branch: "CSE",
+    semester: "6",
+    total: 60,
+    present: 58,
+    absent: 2,
+    time: "11:30:00",
+    date: "2025-05-07",
+  },
+  {
+    subject: "ML",
+    branch: "IT",
+    semester: "5",
+    total: 40,
+    present: 30,
+    absent: 10,
+    time: "13:00:00",
+    date: "2025-05-07",
+  },
+  {
+    subject: "PSQ",
+    branch: "ME",
+    semester: "3",
+    total: 45,
+    present: 42,
+    absent: 3,
+    time: "09:30:00",
+    date: "2025-05-06",
+  },
+  {
+    subject: "DES",
+    branch: "CSE",
+    semester: "4",
+    total: 50,
+    present: 48,
+    absent: 2,
+    time: "11:00:00",
+    date: "2025-05-06",
+  },
+  {
+    subject: "AI",
+    branch: "ECE",
+    semester: "6",
+    total: 60,
+    present: 57,
+    absent: 3,
+    time: "12:30:00",
+    date: "2025-05-05",
+  },
+  {
+    subject: "TOC",
+    branch: "CSE",
+    semester: "5",
+    total: 52,
+    present: 49,
+    absent: 3,
+    time: "14:00:00",
+    date: "2025-05-05",
+  },
+  {
+    subject: "CN",
+    branch: "IT",
+    semester: "5",
+    total: 47,
+    present: 46,
+    absent: 1,
+    time: "09:15:00",
+    date: "2025-05-04",
+  },
+  {
+    subject: "SE",
+    branch: "CSE",
+    semester: "6",
+    total: 60,
+    present: 60,
+    absent: 0,
+    time: "10:45:00",
+    date: "2025-05-03",
+  },
+  {
+    subject: "DM",
+    branch: "ME",
+    semester: "3",
+    total: 40,
+    present: 37,
+    absent: 3,
+    time: "08:30:00",
+    date: "2025-05-02",
+  },
+  {
+    subject: "Maths-IV",
+    branch: "ECE",
+    semester: "4",
+    total: 55,
+    present: 53,
+    absent: 2,
+    time: "11:30:00",
+    date: "2025-05-01",
+  },
+  {
+    subject: "DBMS",
+    branch: "IT",
+    semester: "6",
+    total: 42,
+    present: 40,
+    absent: 2,
+    time: "13:30:00",
+    date: "2025-04-30",
+  },
+  {
+    subject: "OOPS",
+    branch: "CSE",
+    semester: "5",
+    total: 60,
+    present: 56,
+    absent: 4,
+    time: "15:00:00",
+    date: "2025-04-29",
+  },
+];
 export default function TeacherLogsScreen() {
+  const { setLoading } = useLoading();
   const router = useRouter();
-  const [logs, setLogs] = useState({});
+  const [logs, setLogs] = useState([]);
+  const [groupedLogs, setGroupedLogs] = useState({}); // NEW
 
   useEffect(() => {
-    fetchLogs();
-  }, []);
+    groupLogs(logs); // group when logs change
+  }, [logs]);
 
-  const fetchLogs = async () => {
-    const mockData = [
-      {
-        subject: 'DBMS',
-        branch: 'CSE',
-        semester: '6',
-        total: 60,
-        present: 52,
-        absent: 8,
-        time: '09:00:00',
-        date: '2025-05-08',
-      },
-      {
-        subject: 'OOPS',
-        branch: 'ECE',
-        semester: '4',
-        total: 55,
-        present: 50,
-        absent: 5,
-        time: '10:30:00',
-        date: '2025-05-08',
-      },
-      {
-        subject: 'DSA',
-        branch: 'CSE',
-        semester: '6',
-        total: 60,
-        present: 58,
-        absent: 2,
-        time: '11:30:00',
-        date: '2025-05-07',
-      },
-      {
-        subject: 'ML',
-        branch: 'IT',
-        semester: '5',
-        total: 40,
-        present: 30,
-        absent: 10,
-        time: '13:00:00',
-        date: '2025-05-07',
-      },
-      {
-        subject: 'PSQ',
-        branch: 'ME',
-        semester: '3',
-        total: 45,
-        present: 42,
-        absent: 3,
-        time: '09:30:00',
-        date: '2025-05-06',
-      },
-      {
-        subject: 'DES',
-        branch: 'CSE',
-        semester: '4',
-        total: 50,
-        present: 48,
-        absent: 2,
-        time: '11:00:00',
-        date: '2025-05-06',
-      },
-      {
-        subject: 'AI',
-        branch: 'ECE',
-        semester: '6',
-        total: 60,
-        present: 57,
-        absent: 3,
-        time: '12:30:00',
-        date: '2025-05-05',
-      },
-      {
-        subject: 'TOC',
-        branch: 'CSE',
-        semester: '5',
-        total: 52,
-        present: 49,
-        absent: 3,
-        time: '14:00:00',
-        date: '2025-05-05',
-      },
-      {
-        subject: 'CN',
-        branch: 'IT',
-        semester: '5',
-        total: 47,
-        present: 46,
-        absent: 1,
-        time: '09:15:00',
-        date: '2025-05-04',
-      },
-      {
-        subject: 'SE',
-        branch: 'CSE',
-        semester: '6',
-        total: 60,
-        present: 60,
-        absent: 0,
-        time: '10:45:00',
-        date: '2025-05-03',
-      },
-      {
-        subject: 'DM',
-        branch: 'ME',
-        semester: '3',
-        total: 40,
-        present: 37,
-        absent: 3,
-        time: '08:30:00',
-        date: '2025-05-02',
-      },
-      {
-        subject: 'Maths-IV',
-        branch: 'ECE',
-        semester: '4',
-        total: 55,
-        present: 53,
-        absent: 2,
-        time: '11:30:00',
-        date: '2025-05-01',
-      },
-      {
-        subject: 'DBMS',
-        branch: 'IT',
-        semester: '6',
-        total: 42,
-        present: 40,
-        absent: 2,
-        time: '13:30:00',
-        date: '2025-04-30',
-      },
-      {
-        subject: 'OOPS',
-        branch: 'CSE',
-        semester: '5',
-        total: 60,
-        present: 56,
-        absent: 4,
-        time: '15:00:00',
-        date: '2025-04-29',
-      },
-    ];
-    
-    const grouped = mockData.reduce((acc, item) => {
+  useFocusEffect(
+    useCallback(() => {
+      const logs = async () => {
+        setLoading(true);
+        try {
+          const token = await AsyncStorage.getItem("token");
+          const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
+          const response = await axios.get(
+            `${API_BASE_URL}/api/v1/logs/getTeacherLogs/${token}`
+          );
+          setLogs(response.data.data);
+          console.log(JSON.stringify(response.data));
+        } catch (error) {
+        } finally {
+          setLoading(false);
+        }
+      };
+      logs();
+    }, [])
+  );
+  const groupLogs = (logList: any) => {
+    const grouped = logList.reduce((acc: any, item: any) => {
       const label = getDateLabel(item.date);
       if (!acc[label]) acc[label] = [];
       acc[label].push(item);
       return acc;
     }, {});
-
-    setLogs(grouped);
+    setGroupedLogs(grouped);
   };
 
-  const getDateLabel = (dateStr) => {
+  const getDateLabel = (dateStr: any) => {
     const today = dayjs();
     const target = dayjs(dateStr);
-    if (target.isSame(today, 'day')) return 'Today';
-    if (target.isSame(today.subtract(1, 'day'), 'day')) return 'Yesterday';
-    return target.format('D MMM YYYY');
+    if (target.isSame(today, "day")) return "Today";
+    if (target.isSame(today.subtract(1, "day"), "day")) return "Yesterday";
+    return target.format("D MMM YYYY");
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.replace('/teacher/home')}>
+        <TouchableOpacity onPress={() => router.replace("/teacher/home")}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Logs</Text>
@@ -185,20 +215,25 @@ export default function TeacherLogsScreen() {
       </View>
 
       <ScrollView style={styles.scroll}>
-        {Object.keys(logs).map((dateLabel) => (
+        {Object.keys(groupedLogs).map((dateLabel) => (
           <View key={dateLabel} style={styles.section}>
             <Text style={styles.dateLabel}>{dateLabel}</Text>
-            {logs[dateLabel].map((log, idx) => (
+            {groupedLogs[dateLabel].map((log: any, idx: any) => (
               <View key={idx} style={styles.logItem}>
                 <View style={styles.logLeft}>
-                  <Text style={styles.subject}>{log.subject} - Sem {log.semester}, {log.branch}</Text>
+                  <Text style={styles.subject}>
+                    {log.subject} - Sem {log.semester}, {log.branch}
+                  </Text>
                   <Text style={styles.status}>
-                    Total: {log.total} | Present: {log.present} | Absent: {log.absent}
+                    Total: {log.total} | Present: {log.present} | Absent:{" "}
+                    {log.absent}
                   </Text>
                 </View>
                 <View style={styles.logRight}>
                   <Text style={styles.time}>{log.time}</Text>
-                  <Text style={styles.date}>{dayjs(log.date).format('DD-MM-YYYY')}</Text>
+                  <Text style={styles.date}>
+                    {dayjs(log.date).format("DD-MM-YYYY")}
+                  </Text>
                 </View>
                 <MaterialIcons
                   name="assignment"
@@ -218,19 +253,19 @@ export default function TeacherLogsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
     paddingHorizontal: 16,
     paddingVertical: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
   },
   scroll: {
     paddingHorizontal: 16,
@@ -240,40 +275,40 @@ const styles = StyleSheet.create({
   },
   dateLabel: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#444',
+    fontWeight: "600",
+    color: "#444",
     marginBottom: 12,
   },
   logItem: {
-    backgroundColor: '#f1f1f1',
+    backgroundColor: "#f1f1f1",
     padding: 12,
     borderRadius: 12,
     marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   logLeft: {
     flex: 1,
   },
   subject: {
     fontSize: 14,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
   },
   status: {
     fontSize: 12,
-    color: '#444',
+    color: "#444",
   },
   logRight: {
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
   time: {
     fontSize: 12,
-    color: '#000',
+    color: "#000",
   },
   date: {
     fontSize: 12,
-    color: '#888',
+    color: "#888",
   },
 });

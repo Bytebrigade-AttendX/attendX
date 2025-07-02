@@ -92,7 +92,7 @@ export default function Profile() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.replace("/teacher/home")}>
+        <TouchableOpacity onPress={() => router.replace("/student/home")}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Profile</Text>
