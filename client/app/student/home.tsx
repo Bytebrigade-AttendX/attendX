@@ -192,7 +192,12 @@ export default function HomeScreen() {
             subject={subject}
             expanded={expandedId === subject.id}
             onPress={() => toggleExpand(subject.id)}
-            onViewDetails={() => router.push("/student-others/attendance")}
+            onViewDetails={() =>
+              router.push({
+                pathname: "/student-others/attendance",
+                params: { subject_id: subject.id },
+              })
+            }
           />
         ))}
       </ScrollView>
