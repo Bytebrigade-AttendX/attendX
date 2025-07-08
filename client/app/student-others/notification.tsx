@@ -1,6 +1,10 @@
-import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
-import React, { useEffect, useRef, useState } from 'react';
+import { useLoading } from "@/context/LoadingContext";
+import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { BlurView } from "expo-blur";
+import { useFocusEffect } from "expo-router";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
@@ -11,43 +15,73 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
-} from 'react-native';
-
-const screenWidth = Dimensions.get('window').width;
+  View,
+} from "react-native";
+import Constants from "expo-constants";
+const screenWidth = Dimensions.get("window").width;
 
 type NotificationPanelProps = {
   visible: boolean;
   onClose: () => void;
 };
 
-export default function NotificationPanel({ visible, onClose }: NotificationPanelProps) {
+export default function NotificationPanel({
+  visible,
+  onClose,
+}: NotificationPanelProps) {
   const slideAnim = useRef(new Animated.Value(screenWidth)).current;
   const [renderModal, setRenderModal] = useState(visible);
 
   const [overlayVisible, setOverlayVisible] = useState(false);
-  const [overlayTitle, setOverlayTitle] = useState('');
-  const [overlayBody, setOverlayBody] = useState('');
+  const [overlayTitle, setOverlayTitle] = useState("");
+  const [overlayBody, setOverlayBody] = useState("");
 
-  const notificationsByDate = [
+  const { setLoading } = useLoading();
+  const [notificationsByDate, setNotificationByDate] = useState([
     {
-      date: 'Today',
+      date: "Today",
       items: [
-        'You missed the attendance window for DBMS.',
-        'You have attended PSQ Class.',
-        'Daily attendance summary is ready.',
+        "You missed the attendance window for DBMS.",
+        "You have attended PSQ Class.",
+        "Daily attendance summary is ready.",
       ],
     },
     {
-      date: 'Yesterday',
+      date: "Yesterday",
       items: [
-        'Reminder: Project submission due today.',
-        'You missed the attendance window for DSA.',
-        'System maintenance completed successfully.',
+        "Reminder: Project submission due today.",
+        "You missed the attendance window for DSA.",
+        "System maintenance completed successfully.",
       ],
     },
-  ];
+  ]);
+  useEffect(() => {
+    if (!visible) return;
 
+    const fetchNotifications = async () => {
+      setLoading(true);
+      try {
+        const token = await AsyncStorage.getItem("token");
+        if (!token) {
+          console.log("No authentication token found");
+          return;
+        }
+
+        const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || "";
+        const response = await axios.get(
+          `${API_BASE_URL}/api/v1/notification/getNotification/${token}`
+        );
+        setNotificationByDate(response.data.data);
+        console.log(JSON.stringify(response.data.data));
+      } catch (error) {
+        console.log(JSON.stringify(error));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotifications();
+  }, [visible]);
   useEffect(() => {
     if (visible) {
       setRenderModal(true);
@@ -81,7 +115,9 @@ export default function NotificationPanel({ visible, onClose }: NotificationPane
         <Pressable style={styles.blurBackground} onPress={onClose} />
       </BlurView>
 
-      <Animated.View style={[styles.panel, { transform: [{ translateX: slideAnim }] }]}>
+      <Animated.View
+        style={[styles.panel, { transform: [{ translateX: slideAnim }] }]}
+      >
         <SafeAreaView style={styles.container}>
           <View style={styles.header}>
             <TouchableOpacity onPress={onClose}>
@@ -109,7 +145,7 @@ export default function NotificationPanel({ visible, onClose }: NotificationPane
           </ScrollView>
         </SafeAreaView>
       </Animated.View>
-{/*
+      {/*
       <Modal transparent visible={overlayVisible} animationType="fade">
         <BlurView intensity={20} tint="light" style={StyleSheet.absoluteFill} />
         <View style={styles.overlayCard}>
@@ -132,38 +168,38 @@ export default function NotificationPanel({ visible, onClose }: NotificationPane
 const styles = StyleSheet.create({
   blurBackground: {
     ...StyleSheet.absoluteFillObject,
-    width: '100%',
+    width: "100%",
   },
   panel: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     right: 0,
-    height: '100%',
+    height: "100%",
     width: screenWidth * 0.8,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderBottomLeftRadius: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 10,
     elevation: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
     paddingHorizontal: 16,
     paddingVertical: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
   },
   scrollContainer: {
     paddingHorizontal: 16,
@@ -171,27 +207,27 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: "600",
+    color: "#333",
     marginTop: 16,
     marginBottom: 8,
   },
   notificationCard: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: "#f2f2f2",
     borderRadius: 12,
     padding: 12,
     marginBottom: 8,
   },
   notificationText: {
     fontSize: 14,
-    color: '#333',
+    color: "#333",
   },
   overlayCard: {
-    position: 'absolute',
-    top: '30%',
-    alignSelf: 'center',
-    width: '85%',
-    backgroundColor: '#fff',
+    position: "absolute",
+    top: "30%",
+    alignSelf: "center",
+    width: "85%",
+    backgroundColor: "#fff",
     padding: 20,
     borderRadius: 20,
     elevation: 10,
@@ -201,29 +237,29 @@ const styles = StyleSheet.create({
   },
   backArrow: {
     fontSize: 22,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   overlayTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 10,
   },
   overlayBody: {
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 20,
-    color: '#444',
+    color: "#444",
   },
   closeButton: {
-    backgroundColor: '#FF4D6D',
+    backgroundColor: "#FF4D6D",
     paddingVertical: 12,
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   closeButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 16,
   },
 });

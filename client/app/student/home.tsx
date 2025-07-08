@@ -160,7 +160,11 @@ export default function HomeScreen() {
       console.error("Error registering for push notifications:", error);
     }
   };
-  getNotificationToken();
+  useFocusEffect(
+    useCallback(() => {
+      getNotificationToken();
+    }, [])
+  );
   // Set up notification listeners
   notificationListener.current = Notifications.addNotificationReceivedListener(
     (notification) => {

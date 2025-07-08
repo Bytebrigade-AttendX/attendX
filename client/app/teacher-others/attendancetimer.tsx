@@ -41,6 +41,7 @@ export default function AttendanceScreen() {
   const [attendanceState, setAttendanceState] =
     useState<AttendanceState>("idle");
   const [timer, setTimer] = useState(180); // in seconds
+  const [distance, setDistance] = useState(5);
   const [markedPresent, setMarkedPresent] = useState(17);
   const totalStudents = 86;
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
@@ -124,6 +125,8 @@ export default function AttendanceScreen() {
           token,
           teacherLatitude: String(coords.latitude),
           teacherLongitude: String(coords.longitude),
+          distance,
+          time: timer,
         }
       );
       console.log("API Response:", JSON.stringify(response.data, null, 2));
@@ -235,7 +238,17 @@ export default function AttendanceScreen() {
       });
     });
   };
-
+  const adjustTimer = (increment: boolean) => {
+    setTimer((prev) => {
+      return increment ? Math.min(prev + 30, 600) : Math.max(prev - 30, 60);
+    });
+  };
+  const adjustDistance = (increment: boolean) => {
+    setDistance((prev) => {
+      const newval = increment ? Math.min(prev + 5, 30) : Math.max(prev - 5, 5);
+      return newval;
+    });
+  };
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -245,51 +258,135 @@ export default function AttendanceScreen() {
       {/* Spacer below header */}
       <View style={{ height: 80 }} />
       {/* Timer / Checkmark */}
-      <View style={styles.circleWrapper}>
-        {attendanceState === "completed" ? (
-          <Ionicons name="checkmark-done-outline" size={80} color="#bbb" />
-        ) : (
-          <>
-            <Svg height="160" width="160" viewBox="0 0 160 160">
-              <Circle
-                stroke="#eee"
-                fill="none"
-                cx="80"
-                cy="80"
-                r={RADIUS}
-                strokeWidth={STROKE_WIDTH}
-              />
-              <AnimatedCircle
-                stroke="#FF4D6D"
-                fill="none"
-                cx="80"
-                cy="80"
-                r={RADIUS}
-                strokeWidth={STROKE_WIDTH}
-                strokeDasharray={`${CIRCUMFERENCE}, ${CIRCUMFERENCE}`}
-                strokeDashoffset={animatedValue}
-                strokeLinecap="round"
-                rotation="-90"
-                origin="80, 80"
-              />
-            </Svg>
-            <View style={{ position: "absolute", alignItems: "center" }}>
-              <Text style={{ fontSize: 36, fontWeight: "bold" }}>
-                {formatTime(timer)}
-              </Text>
-              <Text style={{ fontSize: 18, fontWeight: "600" }}>min left</Text>
-            </View>
-          </>
+      <View style={styles.controlsContainer}>
+        {attendanceState === "idle" && (
+          <TouchableOpacity
+            style={styles.controlButton}
+            onPress={() => adjustTimer(false)}
+          >
+            <Ionicons name="remove" size={24} color="#FF4D6D" />
+          </TouchableOpacity>
+        )}
+        <View style={styles.circleWrapper}>
+          {attendanceState === "completed" ? (
+            <Ionicons name="checkmark-done-outline" size={80} color="#bbb" />
+          ) : (
+            <>
+              <Svg height="160" width="160" viewBox="0 0 160 160">
+                <Circle
+                  stroke="#eee"
+                  fill="none"
+                  cx="80"
+                  cy="80"
+                  r={RADIUS}
+                  strokeWidth={STROKE_WIDTH}
+                />
+                <AnimatedCircle
+                  stroke="#FF4D6D"
+                  fill="none"
+                  cx="80"
+                  cy="80"
+                  r={RADIUS}
+                  strokeWidth={STROKE_WIDTH}
+                  strokeDasharray={`${CIRCUMFERENCE}, ${CIRCUMFERENCE}`}
+                  strokeDashoffset={animatedValue}
+                  strokeLinecap="round"
+                  rotation="-90"
+                  origin="80, 80"
+                />
+              </Svg>
+              <View style={{ position: "absolute", alignItems: "center" }}>
+                <Text style={{ fontSize: 36, fontWeight: "bold" }}>
+                  {formatTime(timer)}
+                </Text>
+                <Text style={{ fontSize: 18, fontWeight: "600" }}>
+                  min left
+                </Text>
+              </View>
+            </>
+          )}
+        </View>
+        {attendanceState === "idle" && (
+          <TouchableOpacity
+            style={styles.controlButton}
+            onPress={() => adjustTimer(true)}
+          >
+            <Ionicons name="add" size={24} color="#FF4D6D" />
+          </TouchableOpacity>
         )}
       </View>
+      {attendanceState === "idle" && (
+        <View style={styles.controlsContainer}>
+          <TouchableOpacity
+            style={styles.controlButton}
+            onPress={() => adjustDistance(false)}
+          >
+            <Ionicons name="remove" size={24} color="#FF4D6D" />
+          </TouchableOpacity>
+
+          <View style={styles.controlValue}>
+            <Text style={(style = { fontSize: 18, fontWeight: "600" })}>
+              Radius
+            </Text>
+            <Text style={{ fontSize: 36, fontWeight: "bold" }}>
+              {distance}m
+            </Text>
+          </View>
+
+          <TouchableOpacity
+            style={styles.controlButton}
+            onPress={() => adjustDistance(true)}
+          >
+            <Ionicons name="add" size={24} color="#FF4D6D" />
+          </TouchableOpacity>
+        </View>
+      )}
       {/* Spacer below timer */}
       <View style={{ height: 20 }} />
       {(attendanceState === "idle" || attendanceState === "inProgress") && (
-        <>
-          <Text style={styles.info}>Branch : {branch}</Text>
-          <Text style={styles.info}>Sem: {semester}</Text>
-          <Text style={styles.info}>Subject: {subject}</Text>
-        </>
+        <View>
+          <View style={styles.infoRow}>
+            <Ionicons
+              name="school-outline"
+              size={28}
+              color="#FF4D6D"
+              style={styles.icon}
+            />
+
+            <View style={styles.textContainer}>
+              <Text style={styles.label}>Branch</Text>
+              <Text style={styles.value}>{branch}</Text>
+            </View>
+          </View>
+
+          <View style={styles.infoRow}>
+            <Ionicons
+              name="calendar-outline"
+              size={28}
+              color="#FF4D6D"
+              style={styles.icon}
+            />
+
+            <View style={styles.textContainer}>
+              <Text style={styles.label}>Semester</Text>
+              <Text style={styles.value}>{semester}</Text>
+            </View>
+          </View>
+
+          <View style={styles.infoRow}>
+            <Ionicons
+              name="book-outline"
+              size={28}
+              color="#FF4D6D"
+              style={styles.icon}
+            />
+
+            <View style={styles.textContainer}>
+              <Text style={styles.label}>Subject</Text>
+              <Text style={styles.value}>{subject}</Text>
+            </View>
+          </View>
+        </View>
       )}
       ` `
       <View style={styles.buttonGroup}>
@@ -405,6 +502,29 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginTop: 10,
   },
+  controlsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    paddingHorizontal: 20,
+    marginBottom: 10,
+  },
+  controlButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#f0f0f0",
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 15,
+    borderWidth: 1,
+    borderColor: "#FF4D6D",
+  },
+  controlValue: {
+    textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   editButton: {
     backgroundColor: "#FF4D6D",
     padding: 15,
@@ -437,5 +557,39 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderRadius: 8,
     justifyContent: "space-between",
+  },
+
+  infoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f4f4f4",
+    padding: 12,
+    marginVertical: 6,
+    marginHorizontal: 16,
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  icon: {
+    width: 36,
+    height: 36,
+    resizeMode: "contain",
+    marginRight: 12,
+  },
+  textContainer: {
+    flexDirection: "column",
+  },
+  label: {
+    fontSize: 14,
+    color: "#777",
+    fontWeight: "500",
+  },
+  value: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#222",
   },
 });

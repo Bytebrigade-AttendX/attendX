@@ -6,7 +6,7 @@ export default ({ config }) => ({
     eas: {
       projectId: "b1841607-eac3-4367-a9bf-5b4cad7ff9b7",
     },
-    apiUrl: "https://attendance-backend-y70q.onrender.com",
+    apiUrl: "http://13.50.152.95:3000",
   },
 });
 0;

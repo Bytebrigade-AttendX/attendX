@@ -138,7 +138,18 @@ export default function TeacherHomeScreen() {
                       <Text style={styles.subjectDetails}>
                         {subject.code} | {subject.branch}
                       </Text>
-                      <TouchableOpacity style={styles.detailsButton}>
+                      <TouchableOpacity
+                        style={styles.detailsButton}
+                        onPress={() => {
+                          router.replace({
+                            pathname: "/teacher-others/analytics",
+                            params: {
+                              subject_id: subject.id,
+                              semester: item.semester,
+                            },
+                          });
+                        }}
+                      >
                         <Text style={styles.detailsButtonText}>Details</Text>
                       </TouchableOpacity>
                     </View>

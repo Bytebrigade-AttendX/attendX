@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "client",
+    "name": "AttendX",
     "slug": "client",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -36,7 +36,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.kulj33t.client",
+      "package": "com.attendx.test",
       "edgeToEdgeEnabled": true
     },
     "web": {
@@ -52,7 +52,7 @@
       "eas": {
         "projectId": "b1841607-eac3-4367-a9bf-5b4cad7ff9b7"
       },
-      "apiUrl": "https://attendance-backend-y70q.onrender.com"
+      "apiUrl": "http://13.50.152.95:3000"
     },
     "owner": "aadarsh_790"
   }
